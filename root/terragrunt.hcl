@@ -25,6 +25,11 @@ generate "provider" {
 provider "aws" {
   region = "${local.aws_region}"
 
+  assume_role {
+    role_arn     = "arn:aws:iam::039653571618:role/spitzzz-terragrunt-testing"
+    session_name = "spacelift"
+  }
+
   # Only these AWS Account IDs may be operated on by this template
   allowed_account_ids = ["${local.account_id}"]
 }
