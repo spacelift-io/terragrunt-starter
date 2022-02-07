@@ -12,10 +12,11 @@ resource "spacelift_stack" "managed" {
   labels     = ["managed", "terragrunt", "depends-on:${data.spacelift_current_stack.this.id}"]
 }
 
-# Role assumed by a Stack
-resource "spacelift_stack_aws_role" "spacelift-stack" {
-  stack_id = "terragrunt-starter/root/test/us-east-1/s3"
-  role_arn = aws_iam_role.spacelift.arn
+// Configure stack to use the role
+resource "spacelift_aws_role" "credentials" {
+  stack_id                       = "terragrunt-starter/root/test/us-east-1/s3"
+  role_arn                       = aws_iam_role.spacelift.arn
+  generate_credentials_in_worker = true
 }
 
 resource "aws_iam_role" "spacelift" {
