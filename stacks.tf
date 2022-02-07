@@ -8,14 +8,15 @@ resource "spacelift_stack" "managed" {
   branch       = "main"
   project_root = "./root/test/us-east-1/s3"
 
-  autodeploy = true
-  labels     = ["managed", "terragrunt", "depends-on:${data.spacelift_current_stack.this.id}"]
+  manage_state = true
+  autodeploy   = true
+  labels       = ["managed", "terragrunt", "depends-on:${data.spacelift_current_stack.this.id}"]
 }
 
 // Configure stack to use the role
 resource "spacelift_aws_role" "credentials" {
-  stack_id                       = spacelift_stack.managed.id
-  role_arn                       = aws_iam_role.spacelift.arn
+  stack_id = spacelift_stack.managed.id
+  role_arn = aws_iam_role.spacelift.arn
 }
 
 resource "aws_iam_role" "spacelift" {
