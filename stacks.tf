@@ -10,8 +10,10 @@ resource "spacelift_stack" "managed" {
 
   manage_state = true
   autodeploy   = true
-  labels       = ["managed", "terragrunt", "depends-on:${data.spacelift_current_stack.this.id}"]
+  labels       = ["managed", "terragrunt"]
 }
+// "depends-on:${data.spacelift_current_stack.this.id}"
+
 
 // // Configure stack to use the role
 // resource "spacelift_aws_role" "credentials" {
@@ -41,4 +43,4 @@ resource "spacelift_stack" "managed" {
 //           }
 //     ]
 //   })
-}
+// }
