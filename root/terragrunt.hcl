@@ -36,21 +36,23 @@ provider "aws" {
 EOF
 }
 
-# Configure Terragrunt to automatically store tfstate files in an S3 bucket
-remote_state {
-  backend = "s3"
-  config = {
-    encrypt        = true
-    bucket         = "spitzzz-terragrunt-starter-state"
-    key            = "${path_relative_to_include()}/terraform.tfstate"
-    region         = local.aws_region
-    dynamodb_table = "terraform-locks"
-  }
-  generate = {
-    path      = "backend.tf"
-    if_exists = "overwrite_terragrunt"
-  }
-}
+// Spacelift manages the state
+// 
+// # Configure Terragrunt to automatically store tfstate files in an S3 bucket
+// remote_state {
+//   backend = "s3"
+//   config = {
+//     encrypt        = true
+//     bucket         = "spitzzz-terragrunt-starter-state"
+//     key            = "${path_relative_to_include()}/terraform.tfstate"
+//     region         = local.aws_region
+//     dynamodb_table = "terraform-locks"
+//   }
+//   generate = {
+//     path      = "backend.tf"
+//     if_exists = "overwrite_terragrunt"
+//   }
+// }
 
 
 # ---------------------------------------------------------------------------------------------------------------------
