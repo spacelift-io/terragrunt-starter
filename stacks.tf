@@ -16,7 +16,6 @@ resource "spacelift_stack" "managed" {
 resource "spacelift_aws_role" "credentials" {
   stack_id                       = spacelift_stack.managed.id
   role_arn                       = aws_iam_role.spacelift.arn
-  generate_credentials_in_worker = true
 }
 
 resource "aws_iam_role" "spacelift" {
