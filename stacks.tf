@@ -14,10 +14,7 @@ resource "spacelift_stack" "managed" {
 
 // Configure stack to use the role
 resource "spacelift_aws_role" "credentials" {
-  depends_on = [
-    spacelift_stack.managed
-  ]
-  stack_id                       = "terragrunt-starter-root-test-us-east-1-s3"
+  stack_id                       = spacelift_stack.managed.id
   role_arn                       = aws_iam_role.spacelift.arn
   generate_credentials_in_worker = true
 }
