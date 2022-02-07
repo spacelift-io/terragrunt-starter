@@ -1,7 +1,7 @@
 data "spacelift_current_stack" "this" {}
 
 resource "spacelift_stack" "managed" {
-  name        = "terragrunt-starter"
+  name        = "terragrunt-starter/root/test/us-east-1/s3"
   description = "Your first stack managed by Terraform"
 
   repository   = "terragrunt-starter"
