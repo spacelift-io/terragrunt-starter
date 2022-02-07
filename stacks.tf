@@ -9,5 +9,5 @@ resource "spacelift_stack" "managed" {
   project_root = "./root/test/us-east-1/s3"
 
   autodeploy = true
-  labels     = ["managed", "depends-on:${data.spacelift_current_stack.this.id}"]
+  labels     = ["managed", "terragrunt", "depends-on:${data.spacelift_current_stack.this.id}"]
 }
