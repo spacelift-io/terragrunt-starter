@@ -3,7 +3,8 @@ resource "aws_s3_bucket" "this" {
   acl    = "private"
 
   tags = {
-    Name        = "spitzzz-testing-spacelift-bucket"
+    Name        = "spitzzz-testing-spacelift-bucket",
+    Turtle      = "true"
   }
 }
 
