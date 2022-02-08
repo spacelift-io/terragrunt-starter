@@ -31,7 +31,7 @@ resource "spacelift_stack" "managed" {
 
   repository   = "terragrunt-starter"
   branch       = "main"
-  project_root = "./root/test/us-east-1/s3"
+  project_root = "root/test/us-east-1/s3"
 
   manage_state = true
   autodeploy   = false
