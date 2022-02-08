@@ -6,3 +6,4 @@ resource "aws_s3_bucket" "this" {
     Name        = "spitzzz-testing-spacelift-bucket"
   }
 }
+
