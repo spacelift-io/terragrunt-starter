@@ -34,7 +34,7 @@ resource "spacelift_stack" "managed" {
   project_root = "./root/test/us-east-1/s3"
 
   manage_state = true
-  autodeploy   = true
+  autodeploy   = false
   labels       = ["managed", "terragrunt"]
 }
 // "depends-on:${data.spacelift_current_stack.this.id}"
@@ -47,7 +47,7 @@ resource "spacelift_aws_role" "credentials" {
 }
 
 // Stack Policy Attachment
-// resource "spacelift_policy_attachment" "no-weekend-deploys" {
-//   policy_id = "ignore-commits-outside-the-project-root"
-//   stack_id  = spacelift_stack.managed.id
-// }
+resource "spacelift_policy_attachment" "no-weekend-deploys" {
+  policy_id = "ignore-commits-outside-the-project-root"
+  stack_id  = spacelift_stack.managed.id
+}
