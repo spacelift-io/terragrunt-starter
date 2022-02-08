@@ -40,7 +40,7 @@ resource "aws_iam_role" "spacelift" {
             "Principal": {
               "AWS": "324880187172"
             }
-          }
+        }
     ]
   })
 }
