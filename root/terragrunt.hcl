@@ -17,6 +17,18 @@ locals {
   aws_region   = local.region_vars.locals.aws_region
 }
 
+# Generate an AWS provider block
+generate "provider" {
+  path      = "provider.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
+provider "aws" {
+  region = "${local.aws_region}"
+}
+EOF
+}
+
+
 # ---------------------------------------------------------------------------------------------------------------------
 # GLOBAL PARAMETERS
 # These variables apply to all configurations in this subfolder. These are automatically merged into the child
