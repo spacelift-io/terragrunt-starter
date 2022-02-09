@@ -1,28 +1,3 @@
-data "spacelift_current_stack" "this" {}
-
-// locals {
-//   paths = [
-//     "root/test/us-east-1/s3",
-//     "root/test/us-east-1/test"
-//   ]
-// }
-locals {
-  stacks = {
-    "root/test/us-east-1/s3" : {
-        stackDependentPaths = []
-        autodeploy = false
-    }
-    "root/test/us-east-1/test3" : {
-        stackDependentPaths = []
-        autodeploy = false
-    }
-    "root/test/us-east-1/test" : {
-        stackDependentPaths = []
-        autodeploy = false
-    }
-  }
-}
-
 // IAM Role to be used by Managed Stacks
 resource "aws_iam_role" "spacelift" {
   name = "spitzzz-terragrunt-starter-role"
@@ -59,10 +34,13 @@ resource "spacelift_stack" "managed" {
 
   manage_state = true
   autodeploy   = each.value.autodeploy
-  labels       = concat(["managed", "terragrunt"], each.value.stackDependentPaths)
+  labels       = concat([
+    "managed", 
+    "terragrunt"
+  ], 
+    formatlist("depends-on:-%s", each.value.dependsOnPaths)
+  )
 }
-// "depends-on:${data.spacelift_current_stack.this.id}"
-
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
@@ -83,33 +61,3 @@ resource "spacelift_policy_attachment" "policy-attachment" {
   policy_id   = "ignore-commits-outside-the-project-root"
   stack_id    = values(spacelift_stack.managed)[count.index].id
 }
-
-// resource "spacelift_stack" "managed" {
-//   count       = length(local.paths)
-//   name        = element(local.paths, count.index)
-//   description = "Terragrunt stack."
-
-//   repository   = "terragrunt-starter"
-//   branch       = "main"
-//   project_root = element(local.paths, count.index)
-
-//   manage_state = true
-//   autodeploy   = false
-//   labels       = ["managed", "terragrunt"]
-// }
-// // "depends-on:${data.spacelift_current_stack.this.id}"
-
-
-// // Stack Role Attachment
-// resource "spacelift_aws_role" "credentials" {
-//   count       = length(local.paths)
-//   stack_id    = element(spacelift_stack.managed.*.id, count.index)
-//   role_arn    = aws_iam_role.spacelift.arn
-// }
-
-// // // Stack Policy Attachment
-// resource "spacelift_policy_attachment" "policy-attachment" {
-//   count       = length(local.paths)
-//   policy_id   = "ignore-commits-outside-the-project-root"
-//   stack_id    = element(spacelift_stack.managed.*.id, count.index)
-// }
