@@ -1,9 +1,21 @@
 data "spacelift_current_stack" "this" {}
 
+// locals {
+//   paths = [
+//     "root/test/us-east-1/s3",
+//     "root/test/us-east-1/test"
+//   ]
+// }
 locals {
-  paths = [
-    "root/test/us-east-1/s3",
-    "root/test/us-east-1/test"
+  stacks = [
+    {
+      stackPath = "root/test/us-east-1/s3",
+      stackDependentPaths = [],
+      autodeploy = false
+    },
+      stackPath = "root/test/us-east-1/test",
+      stackDependentPaths = [],
+      autodeploy = false
   ]
 }
 
@@ -33,31 +45,65 @@ resource "aws_iam_role" "spacelift" {
 }
 
 resource "spacelift_stack" "managed" {
-  count       = length(local.paths)
-  name        = element(local.paths, count.index)
+  for_each    = local.stacks
+  name        = source.value.stackPath
   description = "Terragrunt stack."
 
   repository   = "terragrunt-starter"
   branch       = "main"
-  project_root = element(local.paths, count.index)
+  project_root = source.value.stackPath
 
   manage_state = true
-  autodeploy   = false
-  labels       = ["managed", "terragrunt"]
+  autodeploy   = source.value.autodeploy
+  labels       = [
+    "managed", 
+    "terragrunt",
+    source.value.stackDependentPaths
+  ]
 }
 // "depends-on:${data.spacelift_current_stack.this.id}"
 
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
-  count       = length(local.paths)
+  count       = length(local.stacks)
   stack_id    = element(spacelift_stack.managed.*.id, count.index)
   role_arn    = aws_iam_role.spacelift.arn
 }
 
 // // Stack Policy Attachment
 resource "spacelift_policy_attachment" "policy-attachment" {
-  count       = length(local.paths)
+  count       = length(local.stacks)
   policy_id   = "ignore-commits-outside-the-project-root"
   stack_id    = element(spacelift_stack.managed.*.id, count.index)
 }
+
+// resource "spacelift_stack" "managed" {
+//   count       = length(local.paths)
+//   name        = element(local.paths, count.index)
+//   description = "Terragrunt stack."
+
+//   repository   = "terragrunt-starter"
+//   branch       = "main"
+//   project_root = element(local.paths, count.index)
+
+//   manage_state = true
+//   autodeploy   = false
+//   labels       = ["managed", "terragrunt"]
+// }
+// // "depends-on:${data.spacelift_current_stack.this.id}"
+
+
+// // Stack Role Attachment
+// resource "spacelift_aws_role" "credentials" {
+//   count       = length(local.paths)
+//   stack_id    = element(spacelift_stack.managed.*.id, count.index)
+//   role_arn    = aws_iam_role.spacelift.arn
+// }
+
+// // // Stack Policy Attachment
+// resource "spacelift_policy_attachment" "policy-attachment" {
+//   count       = length(local.paths)
+//   policy_id   = "ignore-commits-outside-the-project-root"
+//   stack_id    = element(spacelift_stack.managed.*.id, count.index)
+// }
