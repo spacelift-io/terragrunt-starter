@@ -48,15 +48,15 @@ resource "aws_iam_role" "spacelift" {
 
 resource "spacelift_stack" "managed" {
   for_each    = local.stacks
-  name        = source.value.stackPath
+  name        = each.value.stackPath
   description = "Terragrunt stack."
 
   repository   = "terragrunt-starter"
   branch       = "main"
-  project_root = source.value.stackPath
+  project_root = each.value.stackPath
 
   manage_state = true
-  autodeploy   = source.value.autodeploy
+  autodeploy   = each.value.autodeploy
   labels       = [
     "managed", 
     "terragrunt",
