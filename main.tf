@@ -55,11 +55,7 @@ resource "spacelift_stack" "managed" {
 
   manage_state = true
   autodeploy   = each.value.autodeploy
-  labels       = [
-    "managed", 
-    "terragrunt",
-    each.value.stackDependentPaths
-  ]
+  labels       = merge ("managed", "terragrunt", each.value.stackDependentPaths)
 }
 // "depends-on:${data.spacelift_current_stack.this.id}"
 
