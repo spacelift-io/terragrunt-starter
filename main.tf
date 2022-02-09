@@ -66,7 +66,7 @@ resource "spacelift_aws_role" "credentials" {
     spacelift_stack.managed
   ]
   count       = length(local.stacks)
-  stack_id    = values(aws_secretsmanager_secret.secret)[count.index].id
+  stack_id    = values(spacelift_stack.managed)[count.index].id
   role_arn    = aws_iam_role.spacelift.arn
 }
 
@@ -77,7 +77,7 @@ resource "spacelift_policy_attachment" "policy-attachment" {
   ]
   count       = length(local.stacks)
   policy_id   = "ignore-commits-outside-the-project-root"
-  stack_id    = values(aws_secretsmanager_secret.secret)[count.index].id
+  stack_id    = values(spacelift_stack.managed)[count.index].id
 }
 
 // resource "spacelift_stack" "managed" {
