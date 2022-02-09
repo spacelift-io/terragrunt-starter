@@ -16,6 +16,7 @@ locals {
       stackPath = "root/test/us-east-1/test",
       stackDependentPaths = [],
       autodeploy = false
+    }
   ]
 }
 
