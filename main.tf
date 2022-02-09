@@ -1,5 +1,12 @@
 data "spacelift_current_stack" "this" {}
 
+locals {
+  paths = [
+    "root/test/us-east-1/s3",
+    "root/test/us-east-1/test"
+  ]
+}
+
 // IAM Role to be used by Managed Stacks
 resource "aws_iam_role" "spacelift" {
   name = "spitzzz-terragrunt-starter-role"
@@ -26,12 +33,13 @@ resource "aws_iam_role" "spacelift" {
 }
 
 resource "spacelift_stack" "managed" {
-  name        = "terragrunt-starter/root/test/us-east-1/s3"
-  description = "Your first stack managed by Terraform"
+  count       = length(local.paths)
+  name        = element(local.paths, count.index)
+  description = "Terragrunt stack."
 
   repository   = "terragrunt-starter"
   branch       = "main"
-  project_root = "root/test/us-east-1/s3"
+  project_root = element(local.paths, count.index)
 
   manage_state = true
   autodeploy   = false
@@ -42,7 +50,7 @@ resource "spacelift_stack" "managed" {
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
-  stack_id = spacelift_stack.managed.id
+  stack_id = spacelift_stack.managed.id[count.index]
   role_arn = aws_iam_role.spacelift.arn
 }
 
