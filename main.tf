@@ -50,12 +50,14 @@ resource "spacelift_stack" "managed" {
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
-  stack_id = spacelift_stack.managed[count.index].id
-  role_arn = aws_iam_role.spacelift.arn
+  count       = length(local.paths)
+  stack_id    = element(spacelift_stack.managed.*.id, count.index)
+  role_arn    = aws_iam_role.spacelift.arn
 }
 
 // // Stack Policy Attachment
-// resource "spacelift_policy_attachment" "no-weekend-deploys" {
-//   policy_id = "only-track-tf-and-hcl-changes-in-the-absolute-root"
-//   stack_id  = spacelift_stack.managed.id
-// }
+resource "spacelift_policy_attachment" "policy-attachment" {
+  count       = length(local.paths)
+  policy_id   = "ignore-commits-outside-the-project-root"
+  stack_id    = element(spacelift_stack.managed.*.id, count.index)
+}
