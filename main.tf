@@ -48,6 +48,6 @@ resource "spacelift_aws_role" "credentials" {
 
 // Stack Policy Attachment
 resource "spacelift_policy_attachment" "no-weekend-deploys" {
-  policy_id = "ignore-commits-outside-the-project-root"
+  policy_id = "only-track-tf-and-hcl-changes-in-the-absolute-root"
   stack_id  = spacelift_stack.managed.id
 }
