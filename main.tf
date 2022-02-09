@@ -60,7 +60,7 @@ resource "spacelift_stack" "managed" {
   labels       = [
     "managed", 
     "terragrunt",
-    source.value.stackDependentPaths
+    each.value.stackDependentPaths
   ]
 }
 // "depends-on:${data.spacelift_current_stack.this.id}"
