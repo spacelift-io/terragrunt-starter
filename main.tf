@@ -46,8 +46,8 @@ resource "spacelift_aws_role" "credentials" {
   role_arn = aws_iam_role.spacelift.arn
 }
 
-// Stack Policy Attachment
-resource "spacelift_policy_attachment" "no-weekend-deploys" {
-  policy_id = "only-track-tf-and-hcl-changes-in-the-absolute-root"
-  stack_id  = spacelift_stack.managed.id
-}
+// // Stack Policy Attachment
+// resource "spacelift_policy_attachment" "no-weekend-deploys" {
+//   policy_id = "only-track-tf-and-hcl-changes-in-the-absolute-root"
+//   stack_id  = spacelift_stack.managed.id
+// }
