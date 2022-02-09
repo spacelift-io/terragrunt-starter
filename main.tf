@@ -12,6 +12,10 @@ locals {
         stackDependentPaths = []
         autodeploy = false
     }
+    "root/test/us-east-1/test3" : {
+        stackDependentPaths = []
+        autodeploy = false
+    }
     "root/test/us-east-1/test" : {
         stackDependentPaths = []
         autodeploy = false
