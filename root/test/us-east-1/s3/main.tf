@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "this" {
 
   tags = {
     Name        = "spitzzz-testing-spacelift-bucket",
-    Turtle      = "true4"
+    Turtle      = "true5"
   }
 }
 
