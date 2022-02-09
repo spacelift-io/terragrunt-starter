@@ -7,18 +7,16 @@ data "spacelift_current_stack" "this" {}
 //   ]
 // }
 locals {
-  stacks = [
-    {
-      stackPath = "root/test/us-east-1/s3"
-      stackDependentPaths = []
-      autodeploy = false
-    },
-    {
-      stackPath = "root/test/us-east-1/test"
-      stackDependentPaths = []
-      autodeploy = false
+  stacks = {
+    "root/test/us-east-1/s3" : {
+        stackDependentPaths = []
+        autodeploy = false
     }
-  ]
+    "root/test/us-east-1/test" : {
+        stackDependentPaths = []
+        autodeploy = false
+    }
+  }
 }
 
 // IAM Role to be used by Managed Stacks
@@ -48,12 +46,12 @@ resource "aws_iam_role" "spacelift" {
 
 resource "spacelift_stack" "managed" {
   for_each    = local.stacks
-  name        = each.value.stackPath
+  name        = each.key
   description = "Terragrunt stack."
 
   repository   = "terragrunt-starter"
   branch       = "main"
-  project_root = each.value.stackPath
+  project_root = each.key
 
   manage_state = true
   autodeploy   = each.value.autodeploy
