@@ -50,7 +50,7 @@ resource "spacelift_stack" "managed" {
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
-  stack_id = spacelift_stack.managed.id[count.index]
+  stack_id = spacelift_stack.managed[count.index].id
   role_arn = aws_iam_role.spacelift.arn
 }
 
