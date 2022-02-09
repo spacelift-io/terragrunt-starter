@@ -9,12 +9,12 @@ data "spacelift_current_stack" "this" {}
 locals {
   stacks = [
     {
-      stackPath = "root/test/us-east-1/s3",
-      stackDependentPaths = [],
+      stackPath = "root/test/us-east-1/s3"
+      stackDependentPaths = []
       autodeploy = false
     },
-      stackPath = "root/test/us-east-1/test",
-      stackDependentPaths = [],
+      stackPath = "root/test/us-east-1/test"
+      stackDependentPaths = []
       autodeploy = false
     }
   ]
