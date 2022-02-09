@@ -62,6 +62,9 @@ resource "spacelift_stack" "managed" {
 
 // Stack Role Attachment
 resource "spacelift_aws_role" "credentials" {
+  depends_on  = [
+    spacelift_stack.managed
+  ]
   count       = length(local.stacks)
   stack_id    = element(spacelift_stack.managed.*.id, count.index)
   role_arn    = aws_iam_role.spacelift.arn
@@ -69,6 +72,9 @@ resource "spacelift_aws_role" "credentials" {
 
 // // Stack Policy Attachment
 resource "spacelift_policy_attachment" "policy-attachment" {
+  depends_on  = [
+    spacelift_stack.managed
+  ]
   count       = length(local.stacks)
   policy_id   = "ignore-commits-outside-the-project-root"
   stack_id    = element(spacelift_stack.managed.*.id, count.index)
