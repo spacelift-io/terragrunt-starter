@@ -53,11 +53,20 @@ resource "spacelift_aws_role" "credentials" {
 }
 
 // // Stack Policy Attachment
-resource "spacelift_policy_attachment" "policy-attachment" {
+resource "spacelift_policy_attachment" "policy-attach-ignore-commits-outside-root" {
   depends_on = [
     spacelift_stack.managed
   ]
   count     = length(var.stacks)
   policy_id = "ignore-commits-outside-the-project-root"
+  stack_id  = values(spacelift_stack.managed)[count.index].id
+}
+
+resource "spacelift_policy_attachment" "policy-attachment-trigger-dependencies" {
+  depends_on = [
+    spacelift_stack.managed
+  ]
+  count     = length(var.stacks)
+  policy_id = "trigger-stacks-that-declare-an-explicit-dependency"
   stack_id  = values(spacelift_stack.managed)[count.index].id
 }
