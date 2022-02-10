@@ -38,7 +38,7 @@ resource "spacelift_stack" "managed" {
     "managed",
     "terragrunt"
     ],
-    formatlist("depends-on:%s", each.value.dependsOnPaths)
+    formatlist("depends-on:%s", each.value.dependsOnStacks)
   )
 }
 

@@ -8,21 +8,21 @@ inputs = {
   repositoryBranch = "main"
   stacks           = {
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
-      dependsOnPaths = []
+      dependsOnStacks = []
       autodeploy = false
     }
     "stacks/aws/example-account/us-east-1/s3" : {
-        dependsOnPaths = []
+        dependsOnStacks = []
         autodeploy = false
     }
     "stacks/aws/example-account/us-east-1/test3" : {
-        dependsOnPaths = [
+        dependsOnStacks = [
             "stacks/aws/example-account/us-east-1/s3"
         ]
         autodeploy = false
     }
     "stacks/aws/example-account/us-east-1/test" : {
-        dependsOnPaths = []
+        dependsOnStacks = []
         autodeploy = false
     }
   }
