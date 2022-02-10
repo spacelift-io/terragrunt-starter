@@ -16,8 +16,6 @@ resource "aws_iam_role" "spacelift" {
         },
         "Effect" : "Allow",
         "Principal" : {
-          // This is needed to allow Spacelift to use this role
-          // for applying resources in your AWS account.
           "AWS" : "324880187172"
         }
       }
