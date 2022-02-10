@@ -1,4 +1,4 @@
 variable "stacks" {
-    type    = "map"
+    type    = map
     default = {}
 }
