@@ -17,7 +17,7 @@ inputs = {
     }
     "stacks/aws/example-account/us-east-1/test3" : {
         dependsOnPaths = [
-            "aws/test/us-east-1/s3"
+            "stacks/aws/example-account/us-east-1/s3"
         ]
         autodeploy = false
     }
