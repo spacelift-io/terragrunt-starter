@@ -47,8 +47,8 @@ resource "spacelift_aws_role" "credentials" {
   depends_on = [
     spacelift_stack.managed
   ]
-  count    = length(var.stacks)
-  stack_id = values(spacelift_stack.managed)[count.index].id
+  for_each = { for index, stack in var.stacks: stacks => index}
+  stack_id = values(spacelift_stack.managed)[index].id
   role_arn = aws_iam_role.spacelift.arn
 }
 
@@ -57,16 +57,16 @@ resource "spacelift_policy_attachment" "policy-attach-ignore-commits-outside-roo
   depends_on = [
     spacelift_stack.managed
   ]
-  count     = length(var.stacks)
+  for_each  = { for index, stack in var.stacks: stacks => index}
   policy_id = "ignore-commits-outside-the-project-root"
-  stack_id  = values(spacelift_stack.managed)[count.index].id
+  stack_id  = values(spacelift_stack.managed)[index].id
 }
 
 resource "spacelift_policy_attachment" "policy-attachment-trigger-dependencies" {
   depends_on = [
     spacelift_stack.managed
   ]
-  count     = length(var.stacks)
+  for_each  = { for index, stack in var.stacks: stacks => index}
   policy_id = "trigger-stacks-that-declare-an-explicit-dependency"
-  stack_id  = values(spacelift_stack.managed)[count.index].id
+  stack_id  = values(spacelift_stack.managed)[index].id
 }
