@@ -7,6 +7,10 @@ inputs = {
   repositoryName  = "terragrunt-starter"
   repositoryBranch = "main"
   stacks = {
+    "_spacelift/policies/trigger/new-stack-trigger" : {
+      dependsOnPaths = []
+      autodeploy = false
+    }
     "aws/test/us-east-1/s3" : {
         dependsOnPaths = []
         autodeploy = false
