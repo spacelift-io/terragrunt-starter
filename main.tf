@@ -1,6 +1,6 @@
 // IAM Role to be used by Managed Stacks
 resource "aws_iam_role" "spacelift" {
-  name = "spitzzz-terragrunt-starter-role"
+  name = "spacelift-${var.spaceliftAccount}-terragrunt-role"
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/PowerUserAccess"
   ]
@@ -11,11 +11,13 @@ resource "aws_iam_role" "spacelift" {
             "Action": "sts:AssumeRole",
             "Condition": {
               "StringLike": {
-                "sts:ExternalId": "spitzzz@*"
+                "sts:ExternalId": "${var.spaceliftAccount}@*"
               }
             },
             "Effect": "Allow",
             "Principal": {
+              // This is needed to allow Spacelift to use this role
+              // for applying resources in your AWS account.
               "AWS": "324880187172"
             }
         }
@@ -24,12 +26,12 @@ resource "aws_iam_role" "spacelift" {
 }
 
 resource "spacelift_stack" "managed" {
-  for_each    = local.stacks
+  for_each    = var.stacks
   name        = each.key
-  description = "Terragrunt stack."
+  description = "Terragrunt stack managed by Spacelift."
 
-  repository   = "terragrunt-starter"
-  branch       = "main"
+  repository   = var.repositoryName
+  branch       = var.repositoryBranch
   project_root = each.key
 
   manage_state = true
@@ -47,7 +49,7 @@ resource "spacelift_aws_role" "credentials" {
   depends_on  = [
     spacelift_stack.managed
   ]
-  count       = length(local.stacks)
+  count       = length(var.stacks)
   stack_id    = values(spacelift_stack.managed)[count.index].id
   role_arn    = aws_iam_role.spacelift.arn
 }
@@ -57,7 +59,7 @@ resource "spacelift_policy_attachment" "policy-attachment" {
   depends_on  = [
     spacelift_stack.managed
   ]
-  count       = length(local.stacks)
+  count       = length(var.stacks)
   policy_id   = "ignore-commits-outside-the-project-root"
   stack_id    = values(spacelift_stack.managed)[count.index].id
 }
