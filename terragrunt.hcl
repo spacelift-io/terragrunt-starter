@@ -7,15 +7,18 @@ inputs = {
   repositoryName   = "terragrunt-starter"
   repositoryBranch = "main"
   stacks           = {
+    # Spacelift related
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
       autodeploy = false
-      labels     = ["folder:This:folder:Is:folder:a:folder:test"]
+      labels     = ["folder:This/is/a/test/folder"]
       dependsOnStacks = []
       terraform_version = ""
       enable_local_preview = false
       worker_pool_id = ""
       administrative = false
     }
+    # Example Account
+    # us-east-1
     "stacks/aws/example-account/us-east-1/s3" : {
       autodeploy = false
       labels = []
