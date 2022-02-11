@@ -24,18 +24,18 @@ resource "aws_iam_role" "spacelift" {
 }
 
 resource "spacelift_stack" "managed" {
-  for_each    = var.stacks
-  name        = each.key
-  description = "Terragrunt stack managed by Spacelift."
-  terraform_version = try(each.value.terraform_version, null)
+  for_each             = var.stacks
+  name                 = each.key
+  description          = "Terragrunt stack managed by Spacelift."
+  terraform_version    = try(each.value.terraform_version, null)
   enable_local_preview = try(each.value.enable_local_preview, false)
-  worker_pool_id = try(each.value.worker_pool_id, null)
-  repository   = var.repositoryName
-  branch       = var.repositoryBranch
-  project_root = each.key
-  administrative = try(each.value.administrative, false)
-  manage_state   = true
-  autodeploy     = try(each.value.autodeploy, false)
+  worker_pool_id       = try(each.value.worker_pool_id, null)
+  repository           = var.repositoryName
+  branch               = var.repositoryBranch
+  project_root         = each.key
+  administrative       = try(each.value.administrative, false)
+  manage_state         = true
+  autodeploy           = try(each.value.autodeploy, false)
   labels = concat([
     "managed",
     "terragrunt"
@@ -60,7 +60,7 @@ resource "spacelift_policy_attachment" "policy-attach-ignore-commits-outside-roo
   depends_on = [
     spacelift_stack.managed
   ]
-  for_each  =  spacelift_stack.managed
+  for_each  = spacelift_stack.managed
   policy_id = "ignore-commits-outside-the-project-root"
   stack_id  = spacelift_stack.managed[each.key].id
 }
