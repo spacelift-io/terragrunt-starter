@@ -10,7 +10,7 @@ inputs = {
     # Spacelift related
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
       autodeploy = false
-      additional_labels     = ["folder:Spacelift"]
+      additional_labels     = []
       dependsOnStacks = []
       terraform_version = ""
       enable_local_preview = false
@@ -21,7 +21,7 @@ inputs = {
     # us-east-1
     "stacks/aws/example-account/us-east-1/s3" : {
       autodeploy = false
-      additional_labels = ["folder:AWS/Example Account/us-east-1"]
+      additional_labels = []
       dependsOnStacks = []
       terraform_version = ""
       enable_local_preview = false
@@ -33,7 +33,7 @@ inputs = {
             "stacks/aws/example-account/us-east-1/s3",
             "stacks/aws/example-account/us-east-1/test"
         ]
-      additional_labels = ["folder:AWS/Example Account/us-east-1"]
+      additional_labels = []
       autodeploy = false
       terraform_version = ""
       enable_local_preview = false
@@ -42,7 +42,7 @@ inputs = {
     }
     "stacks/aws/example-account/us-east-1/test" : {
       dependsOnStacks = []
-      additional_labels = ["folder:AWS/Example Account/us-east-1"]
+      additional_labels = []
       autodeploy = false
       terraform_version = ""
       enable_local_preview = false
