@@ -10,6 +10,7 @@ inputs = {
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
       dependsOnStacks = []
       autodeploy = false
+      labels     = ["folder:This:Is:a:test"]
     }
     "stacks/aws/example-account/us-east-1/s3" : {
         dependsOnStacks = []
