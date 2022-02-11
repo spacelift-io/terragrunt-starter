@@ -40,7 +40,7 @@ resource "spacelift_stack" "managed" {
     "managed",
     "terragrunt"
     ],
-    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks", lookup(var.stacks[each.key], "dependsOnStacks")),
+    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks"), lookup(var.stacks[each.key], "dependsOnStacks")),
     lookup(var.stacks[each.key], "additional_labels", [])
   )
 }
