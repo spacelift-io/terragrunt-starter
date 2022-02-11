@@ -18,6 +18,7 @@ inputs = {
     }
     "stacks/aws/example-account/us-east-1/s3" : {
       autodeploy = false
+      labels = []
       dependsOnStacks = []
       terraform_version = ""
       enable_local_preview = false
@@ -28,6 +29,7 @@ inputs = {
       dependsOnStacks = [
             "stacks/aws/example-account/us-east-1/s3"
         ]
+      labels = []
       autodeploy = false
       terraform_version = ""
       enable_local_preview = false
@@ -36,6 +38,7 @@ inputs = {
     }
     "stacks/aws/example-account/us-east-1/test" : {
       dependsOnStacks = []
+      labels = []
       autodeploy = false
       terraform_version = ""
       enable_local_preview = false
