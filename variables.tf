@@ -14,6 +14,6 @@ variable "repositoryBranch" {
 }
 
 variable "stacks" {
-  type    = map(any)
+  type    = map(map(any))
   default = {}
 }
