@@ -8,12 +8,10 @@ inputs = {
   repositoryBranch = "main"
   stacks           = {
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
-      dependsOnStacks = []
       autodeploy = false
       labels     = ["folder:This:Is:a:test"]
     }
     "stacks/aws/example-account/us-east-1/s3" : {
-        dependsOnStacks = []
         autodeploy = false
     }
     "stacks/aws/example-account/us-east-1/test3" : {
@@ -23,7 +21,6 @@ inputs = {
         autodeploy = false
     }
     "stacks/aws/example-account/us-east-1/test" : {
-        dependsOnStacks = []
         autodeploy = false
     }
   }
