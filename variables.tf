@@ -15,13 +15,13 @@ variable "repositoryBranch" {
 
 variable "stacks" {
   type = map(object({
-      autodeploy           = string,
-      additional_labels    = list(string)
-      dependsOnStacks      = list(string)
-      terraform_version    = string
-      enable_local_preview = bool
-      worker_pool_id       = string
-      administrative       = bool
+    autodeploy           = string,
+    additional_labels    = list(string)
+    dependsOnStacks      = list(string)
+    terraform_version    = string
+    enable_local_preview = bool
+    worker_pool_id       = string
+    administrative       = bool
   }))
   default = {}
 }

@@ -38,7 +38,11 @@ resource "spacelift_stack" "managed" {
   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
   labels = concat(
     ["managed", "terragrunt"],
+    # Dynamically add dependencies if they are specified
+    # Note: Requires trigger dependencies policies for labels to trigger dependencies
     formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
+    # Dynamically generate Spacelift label folders to organize stacks based on their actual folder path
+    # Note: This assumes your terragrunt structure begins one level deep as it does in this example under "stacks"
     [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
     lookup(var.stacks[each.key], "additional_labels", [])
   )
