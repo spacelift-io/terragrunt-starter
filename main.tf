@@ -39,7 +39,7 @@ resource "spacelift_stack" "managed" {
   labels = concat(
     ["managed", "terragrunt"],
     formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
-    [join("", ["folder:", join(",", slice(split("/", each.key), 1, length(split("/", each.key))))])],
+    [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
     lookup(var.stacks[each.key], "additional_labels", [])
   )
 }
