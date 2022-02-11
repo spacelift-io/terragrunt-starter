@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  spaceliftAccount ="spitzzz"
+  spaceliftAccount = "spitzzz"
   repositoryName   = "terragrunt-starter"
   repositoryBranch = "main"
   stacks           = {

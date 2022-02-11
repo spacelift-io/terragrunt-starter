@@ -27,18 +27,21 @@ resource "spacelift_stack" "managed" {
   for_each    = var.stacks
   name        = each.key
   description = "Terragrunt stack managed by Spacelift."
-
+  terraform_version = try(each.value.terraform_version, null)
+  enable_local_preview = try(each.value.enable_local_preview, false)
+  worker_pool_id = try(each.value.worker_pool_id, null)
   repository   = var.repositoryName
   branch       = var.repositoryBranch
   project_root = each.key
-
-  manage_state = true
-  autodeploy   = each.value.autodeploy
+  administrative = try(each.value.administrative, false)
+  manage_state   = true
+  autodeploy     = try(each.value.autodeploy, false)
   labels = concat([
     "managed",
     "terragrunt"
     ],
-    formatlist("depends-on:%s", each.value.dependsOnStacks)
+    formatlist("depends-on:%s", each.value.dependsOnStacks),
+    try(each.value.labels, [])
   )
 }
 
