@@ -27,9 +27,9 @@ resource "spacelift_stack" "managed" {
   for_each             = var.stacks
   name                 = each.key
   description          = "Terragrunt stack managed by Spacelift."
-  terraform_version    = lookup(var.stacks[each.key], "terraform_version", null)
+  terraform_version    = lookup(var.stacks[each.key], "terraform_version", "")
   enable_local_preview = lookup(var.stacks[each.key], "enable_local_preview", false)
-  worker_pool_id       = lookup(var.stacks[each.key], "worker_pool_id", null)
+  worker_pool_id       = lookup(var.stacks[each.key], "worker_pool_id", "")
   repository           = var.repositoryName
   branch               = var.repositoryBranch
   project_root         = each.key
