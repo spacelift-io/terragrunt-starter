@@ -16,7 +16,7 @@ variable "repositoryBranch" {
 variable "stacks" {
   type = map(object({
       autodeploy           = string,
-      labels               = list(string)
+      additional_labels    = list(string)
       dependsOnStacks      = list(string)
       terraform_version    = string
       enable_local_preview = bool
