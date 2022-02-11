@@ -9,7 +9,7 @@ inputs = {
   stacks           = {
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
       autodeploy = false
-      labels     = ["folder:This:Is:a:test"]
+      labels     = ["folder:This:folder:Is:folder:a:folder:test"]
       dependsOnStacks = []
       terraform_version = ""
       enable_local_preview = false
