@@ -23,5 +23,5 @@ variable "stacks" {
     worker_pool_id       = string
     administrative       = bool
   }))
-  default = {{}}
+  default = {}
 }
