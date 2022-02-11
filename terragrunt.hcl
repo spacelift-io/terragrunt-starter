@@ -30,7 +30,8 @@ inputs = {
     }
     "stacks/aws/example-account/us-east-1/test3" : {
       dependsOnStacks = [
-            "stacks/aws/example-account/us-east-1/s3"
+            "stacks/aws/example-account/us-east-1/s3",
+            "stacks/aws/example-account/us-east-1/test"
         ]
       additional_labels = ["folder:AWS/Example Account/us-east-1"]
       autodeploy = false
