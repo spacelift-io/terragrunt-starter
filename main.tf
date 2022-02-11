@@ -36,11 +36,9 @@ resource "spacelift_stack" "managed" {
   administrative       = lookup(var.stacks[each.key], "administrative", false)
   manage_state         = true
   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
-  labels = concat([
-    "managed",
-    "terragrunt"
-    ],
-    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks"), lookup(var.stacks[each.key], "dependsOnStacks")),
+  labels = concat(
+    ["managed", "terragrunt"],
+    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
     lookup(var.stacks[each.key], "additional_labels", [])
   )
 }
