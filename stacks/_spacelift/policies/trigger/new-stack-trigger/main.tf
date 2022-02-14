@@ -3,3 +3,4 @@ resource "spacelift_policy" "no-weekend-deploys" {
   body = file("./policy.rego")
   type = var.type
 }
+
