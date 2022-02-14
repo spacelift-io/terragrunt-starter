@@ -22,7 +22,13 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-provider "spacelift" {}
+terraform {
+  required_providers {
+    spacelift = {
+      source = "spacelift-io/spacelift"
+    }
+  }
+}
 
 provider "aws" {
   region = "${local.aws_region}"
