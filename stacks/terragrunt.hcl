@@ -22,14 +22,6 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-terraform {
-  required_providers {
-    test = {
-      source = "test-io/test"
-    }
-  }
-}
-
 provider "aws" {
   region = "${local.aws_region}"
 }
