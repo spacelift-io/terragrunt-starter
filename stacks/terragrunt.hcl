@@ -24,8 +24,8 @@ generate "provider" {
   contents  = <<EOF
 terraform {
   required_providers {
-    spacelift = {
-      source = "spacelift-io/spacelift"
+    test = {
+      source = "test-io/test"
     }
   }
 }
