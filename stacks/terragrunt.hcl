@@ -22,6 +22,8 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
+provider "spacelift" {}
+
 provider "aws" {
   region = "${local.aws_region}"
 }
