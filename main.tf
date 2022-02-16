@@ -45,7 +45,7 @@ module "stack" {
   createIamRole        = lookup(var.stacks[each.key], "createIamRole", false)
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
   executionRoleArn     = lookup(var.stacks[each.key], "executionRoleArn", aws_iam_role.spacelift[0].arn)
-  attachmentPolicyIds  = lookup(var.stacks[each.key], "autodeploy", []])
+  attachmentPolicyIds  = lookup(var.stacks[each.key], "autodeploy", [])
   project_root         = each.key
   labels = concat(
     ["managed", "terragrunt"],
