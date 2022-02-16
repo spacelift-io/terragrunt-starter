@@ -20,6 +20,7 @@ inputs = {
       executionRoleArn     = ""
       additional_labels    = []
       attachmentPolicyIds  = []
+      attachmentContextIds = []
       dependsOnStacks      = []
     }
     # Example Account
@@ -36,6 +37,7 @@ inputs = {
       executionRoleArn     = ""
       additional_labels    = []
       attachmentPolicyIds  = []
+      attachmentContextIds = []
       dependsOnStacks      = []
     }
     "stacks/aws/example-account/us-east-1/test3" : {
@@ -50,6 +52,7 @@ inputs = {
       executionRoleArn     = ""
       additional_labels    = []
       attachmentPolicyIds  = []
+      attachmentContextIds = []
       dependsOnStacks      = [
             "stacks/aws/example-account/us-east-1/s3",
             "stacks/aws/example-account/us-east-1/test"
@@ -67,6 +70,7 @@ inputs = {
       executionRoleArn     = ""
       additional_labels    = []
       attachmentPolicyIds  = []
+      attachmentContextIds = []
       dependsOnStacks      = []
     }
   }

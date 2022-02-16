@@ -35,7 +35,7 @@ resource "aws_iam_role" "spacelift" {
 #   ]
 #   # Create a stack for each stack input
 #   for_each = var.stacks
-#   source   = "git::git@github.com:spitzzz/terraform-spacelift-stack.git?ref=0.0.1"
+#   source   = "git::git@github.com:spitzzz/terraform-spacelift-stack.git?ref=0.0.2"
 
 #   # Inputs
 #   name                 = each.key
