@@ -26,7 +26,7 @@ variable "stacks" {
     createIamRole        = bool
     setupAwsIntegration  = bool
     executionRoleArn     = string
-    attachmentPolicyIds  = string
+    attachmentPolicyIds  = list(string)
   }))
   default = {}
 }
