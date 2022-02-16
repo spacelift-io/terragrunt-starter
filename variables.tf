@@ -15,16 +15,16 @@ variable "repositoryBranch" {
 
 variable "stacks" {
   type = map(object({
-    autodeploy           = string,
+    autodeploy           = defaults(bool, true),
     additional_labels    = list(string)
     dependsOnStacks      = list(string)
     terraform_version    = string
-    enable_local_preview = bool
+    enable_local_preview = defaults(bool, false)
     worker_pool_id       = string
     administrative       = bool
     description          = string
-    createIamRole        = bool
-    setupAwsIntegration  = bool
+    createIamRole        = defaults(bool, true)
+    setupAwsIntegration  = defaults(bool, false)
     executionRoleArn     = optional(string)
     attachmentPolicyIds  = list(string)
     attachmentContextIds = list(string)
