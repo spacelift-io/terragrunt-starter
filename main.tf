@@ -12,7 +12,7 @@ resource "spacelift_mounted_file" "github-ssh-key" {
 
 // IAM Role to allow stacks to deploy resources on AWS
 resource "aws_iam_role" "spacelift" {
-  name = "spacelift-${var.spaceliftAccount}-terragrunt-role"
+  name = "spacelift-${var.spaceliftAccountName}-terragrunt-role"
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/PowerUserAccess"
   ]
@@ -23,7 +23,7 @@ resource "aws_iam_role" "spacelift" {
         "Action" : "sts:AssumeRole",
         "Condition" : {
           "StringLike" : {
-            "sts:ExternalId" : "${var.spaceliftAccount}@*"
+            "sts:ExternalId" : "${var.spaceliftAccountName}@*"
           }
         },
         "Effect" : "Allow",
