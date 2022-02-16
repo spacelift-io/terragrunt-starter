@@ -14,20 +14,6 @@ variable "repositoryBranch" {
 }
 
 variable "stacks" {
-  type = map(object({
-    autodeploy           = bool,
-    additional_labels    = list(string)
-    dependsOnStacks      = list(string)
-    terraform_version    = string
-    enable_local_preview = bool
-    worker_pool_id       = string
-    administrative       = bool
-    description          = string
-    createIamRole        = bool
-    setupAwsIntegration  = bool
-    executionRoleArn     = optional(string)
-    attachmentPolicyIds  = list(string)
-    attachmentContextIds = list(string)
-  }))
+  type = map(any)
   default = {}
 }
