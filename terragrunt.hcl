@@ -3,18 +3,21 @@ terraform {
 }
 
 inputs = {
-  spaceliftAccount = "spitzzz"
+  spaceliftAccountName = "spitzzz"
   repositoryName   = "terragrunt-starter"
   repositoryBranch = "main"
   stacks           = {
     # Spacelift related
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
-      administrative       = false
+      administrative       = true
       autodeploy           = false
       enable_local_preview = false
+      createIamRole        = false
       terraform_version    = ""
       worker_pool_id       = ""
+      description          = ""
       additional_labels    = []
+      attachmentPolicyIds  = []
       dependsOnStacks      = []
     }
     # Example Account
@@ -23,18 +26,24 @@ inputs = {
       administrative       = false
       autodeploy           = false
       enable_local_preview = false
+      createIamRole        = false
       terraform_version    = ""
       worker_pool_id       = ""
+      description          = ""
       additional_labels    = []
+      attachmentPolicyIds  = []
       dependsOnStacks      = []
     }
     "stacks/aws/example-account/us-east-1/test3" : {
       administrative       = false
       autodeploy           = false
       enable_local_preview = false
+      createIamRole        = false
       terraform_version    = ""
       worker_pool_id       = ""
+      description          = ""
       additional_labels    = []
+      attachmentPolicyIds  = []
       dependsOnStacks      = [
             "stacks/aws/example-account/us-east-1/s3",
             "stacks/aws/example-account/us-east-1/test"
@@ -44,9 +53,12 @@ inputs = {
       administrative       = false
       autodeploy           = false
       enable_local_preview = false
+      createIamRole        = false
       terraform_version    = ""
       worker_pool_id       = ""
+      description          = ""
       additional_labels    = []
+      attachmentPolicyIds  = []
       dependsOnStacks      = []
     }
   }

@@ -1,4 +1,4 @@
-variable "spaceliftAccount" {
+variable "spaceliftAccountName" {
   type        = string
   description = "The name of the Spacelift account you are using."
 }
@@ -22,6 +22,11 @@ variable "stacks" {
     enable_local_preview = bool
     worker_pool_id       = string
     administrative       = bool
+    description          = string
+    createIamRole        = bool
+    setupAwsIntegration  = bool
+    executionRoleArn     = string
+    attachmentPolicyIds  = string
   }))
   default = {}
 }
