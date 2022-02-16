@@ -6,8 +6,8 @@ resource "spacelift_context" "shared" {
 
 resource "spacelift_mounted_file" "github-ssh-key" {
   context_id    = spacelift_context.shared.id
-  relative_path = "~/.ssh/id_ssh"
-  content       = filebase64("~/.ssh/id_ssh")
+  relative_path = "~/.ssh/id_rsa"
+  content       = filebase64("~/.ssh/id_rsa")
 }
 
 // IAM Role to allow stacks to deploy resources on AWS
