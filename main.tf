@@ -50,7 +50,7 @@ module "stack" {
   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
   createIamRole        = lookup(var.stacks[each.key], "createIamRole", false)
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
-  executionRoleArn     = lookup(var.stacks[each.key], "executionRoleArn", aws_iam_role.spacelift.arn)
+  executionRoleArn     = lookup(var.stacks[each.key], "executionRoleArn", "test")
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
   project_root         = each.key
