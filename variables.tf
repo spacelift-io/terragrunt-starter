@@ -63,7 +63,7 @@ variable "test" {
       attachmentPolicyIds  = []
       attachmentContextIds = []
       dependsOnStacks      = []
-      executionRoleArn     = "test"
+      executionRoleArn     = optional(string)
     }
   }
 }

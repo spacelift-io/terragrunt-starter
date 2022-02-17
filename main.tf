@@ -33,42 +33,42 @@ output "test" {
   value = var.test["stacks/_spacelift/policies/trigger/new-stack-trigger"].executionRoleArn
 }
 
-# module "stack" {
-#   depends_on = [
-#     aws_iam_role.spacelift
-#   ]
-#   # Create a stack for each stack input
-#   for_each = var.stacks
-#   source   = "git::git@github.com:spitzzz/terraform-spacelift-stack.git?ref=0.0.2"
+module "stack" {
+  depends_on = [
+    aws_iam_role.spacelift
+  ]
+  # Create a stack for each stack input
+  for_each = var.stacks
+  source   = "git::git@github.com:spitzzz/terraform-spacelift-stack.git?ref=0.0.2"
 
-#   # Inputs
-#   name                 = each.key
-#   spaceliftAccountName = var.spaceliftAccountName
-#   repositoryName       = var.repositoryName
-#   repositoryBranch     = var.repositoryBranch
-#   description          = lookup(var.stacks[each.key], "description", "Terragrunt stack managed by Spacelift.")
-#   terraform_version    = lookup(var.stacks[each.key], "terraform_version", "")
-#   enable_local_preview = lookup(var.stacks[each.key], "enable_local_preview", false)
-#   worker_pool_id       = lookup(var.stacks[each.key], "worker_pool_id", "")
-#   administrative       = lookup(var.stacks[each.key], "administrative", false)
-#   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
-#   createIamRole        = lookup(var.stacks[each.key], "createIamRole", false)
-#   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
-#   executionRoleArn     = try(var.stacks[each.key].executionRoleArn, aws_iam_role.spacelift.arn)
-#   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
-#   attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
-#   project_root         = each.key
-#   labels = concat(
-#     ["managed", "terragrunt"],
-#     # Dynamically add dependencies if they are specified
-#     # Note: Requires trigger dependencies policies for labels to trigger dependencies
-#     formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
-#     # Dynamically generate Spacelift label folders to organize stacks based on their actual folder path
-#     # Note: This assumes your terragrunt structure begins one level deep as it does in this example under "stacks"
-#     [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
-#     lookup(var.stacks[each.key], "additional_labels", [])
-#   )
-# }
+  # Inputs
+  name                 = each.key
+  spaceliftAccountName = var.spaceliftAccountName
+  repositoryName       = var.repositoryName
+  repositoryBranch     = var.repositoryBranch
+  description          = lookup(var.stacks[each.key], "description", "Terragrunt stack managed by Spacelift.")
+  terraform_version    = lookup(var.stacks[each.key], "terraform_version", "")
+  enable_local_preview = lookup(var.stacks[each.key], "enable_local_preview", false)
+  worker_pool_id       = lookup(var.stacks[each.key], "worker_pool_id", "")
+  administrative       = lookup(var.stacks[each.key], "administrative", false)
+  autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
+  createIamRole        = lookup(var.stacks[each.key], "createIamRole", false)
+  setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
+  executionRoleArn     = try(var.stacks[each.key].executionRoleArn, aws_iam_role.spacelift.arn)
+  attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
+  attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
+  project_root         = each.key
+  labels = concat(
+    ["managed", "terragrunt"],
+    # Dynamically add dependencies if they are specified
+    # Note: Requires trigger dependencies policies for labels to trigger dependencies
+    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
+    # Dynamically generate Spacelift label folders to organize stacks based on their actual folder path
+    # Note: This assumes your terragrunt structure begins one level deep as it does in this example under "stacks"
+    [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
+    lookup(var.stacks[each.key], "additional_labels", [])
+  )
+}
 
 # // Spacelift stack
 # # For each stack item passed into the stacks variable input, we dynamially
