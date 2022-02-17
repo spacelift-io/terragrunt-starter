@@ -30,7 +30,7 @@ resource "aws_iam_role" "spacelift" {
 }
 
 output "test" {
-  value = var.stacks[each.key].executionRoleArn
+  value = var.test.executionRoleArn
 }
 
 # module "stack" {
