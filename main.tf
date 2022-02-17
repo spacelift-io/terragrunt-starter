@@ -30,7 +30,7 @@ resource "aws_iam_role" "spacelift" {
 }
 
 output "test" {
-  value = var.test["stacks/_spacelift/policies/trigger/new-stack-trigger"].executionRoleArn == "" ? "test" : var.test["stacks/_spacelift/policies/trigger/new-stack-trigger"].executionRoleArn
+  value = var.test["stacks/_spacelift/policies/trigger/new-stack-trigger"].executionRoleArn == null ? "test" : var.test["stacks/_spacelift/policies/trigger/new-stack-trigger"].executionRoleArn
 }
 
 # module "stack" {
