@@ -30,7 +30,6 @@ resource "aws_iam_role" "spacelift" {
 }
 
 output "test" {
-  for_each = var.stacks
   value = var.stacks[each.key].executionRoleArn
 }
 
