@@ -64,7 +64,6 @@ inputs = {
       terraform_version    = ""
       worker_pool_id       = ""
       description          = ""
-      executionRoleArn     = "test"
       additional_labels    = []
       attachmentPolicyIds  = []
       attachmentContextIds = []
