@@ -47,6 +47,7 @@ module "stack" {
   # Create a stack for each stack input
   for_each = var.stacks
   source   = "spacelift.io/spacelift-io/stack/spacelift"
+  version  = "0.0.1"
 
   # Inputs
   name                 = each.key
