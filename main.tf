@@ -82,3 +82,4 @@ module "stack" {
     lookup(var.stacks[each.key], "additional_labels", [])
   )
 }
+
