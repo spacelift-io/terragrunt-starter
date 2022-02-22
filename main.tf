@@ -66,7 +66,7 @@ module "stack" {
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = [
     concat(
-      [tostring(spacelift_context.shared.id)],
+      tolist([tostring(spacelift_context.shared.id)]),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
     )
   ]
