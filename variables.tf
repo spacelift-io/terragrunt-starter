@@ -27,7 +27,7 @@ variable "stacks" {
     setupAwsIntegration  = bool
     executionRoleArn     = optional(string)
     attachmentPolicyIds  = list(string)
-    attachmentContextIds = list()
+    attachmentContextIds = list(any)
   }))
   default = {}
 }
