@@ -51,7 +51,7 @@ module "stack" {
 
   # Inputs
   name                 = each.key
-  project_root         = each.key
+  projectRoot          = each.key
   spaceliftAccountName = var.spaceliftAccountName
   repositoryName       = var.repositoryName
   repositoryBranch     = var.repositoryBranch
