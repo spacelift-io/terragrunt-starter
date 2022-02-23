@@ -4,6 +4,11 @@ The purpose of this repository is to help users get started with using Terragrun
 
 ## Pre-requisites:
 * Spacelift account already created.
+<<<<<<< HEAD
+=======
+
+---
+>>>>>>> 21d71abd7ef7b153e2b1bf313b15b16aa3060508
 
 ## What does this repository create?
 * A dynamic number `n` of Spacelift Stacks: The number of stacks created depends upon the length of the `stacks` input variable in the `terragrunt.hcl` file in the root of this repository.
@@ -13,11 +18,21 @@ The purpose of this repository is to help users get started with using Terragrun
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
 
+<<<<<<< HEAD
 ## Step 1: Create your repository
 
 Create your own GitHub repository using this repository as a template. To do this, click the [Use this template](https://github.com/spacelift-io/terragrunt-starter/generate/) button on this repository. If you are using a different version control provider, you can also clone down this repository locally and initialize it into your own version control system as a new repository.
 
 [![Use this template](pics/01-use-this-template.png)](https://github.com/spacelift-io/terragrunt-starter/generate/)
+=======
+---
+
+## Step 1: Create your repository
+
+Create your own GitHub repository using this repository as a template. To do this, click the [Use this template](https://github.com/spacelift-io/terraform-starter/generate/) button on this repository. If you are using a different version control provider, you can also clone down this repository locally and initialize it into your own version control system as a new repository.
+
+[![Use this template](pics/01-use-this-template.png)](https://github.com/spacelift-io/terraform-starter/generate/)
+>>>>>>> 21d71abd7ef7b153e2b1bf313b15b16aa3060508
 
 ---
 
@@ -52,6 +67,7 @@ Ensure you select "Terraform" for the Backend, as the entire purpose of this is 
 `IMPORTANT` You'll need to make sure Administratrive is set to `true` on this step! It's also important that you do not change the project root. All other settings can be set as you desire. If you would like to require approval for tracked runs (runs to-be applied), ensure that autodeploy is disabled. You can customize your approval process later if needed by attaching [approval policies](https://docs.spacelift.io/concepts/policy/approval-policy) to this stack.
 
 ![Define Behavior](pics/05-define-behavior.png)
+<<<<<<< HEAD
 
 ---
 
@@ -118,3 +134,13 @@ Success should look like below:
 You're all setup! You can now trigger your stack for the first time! Keep in mind, when you trigger this stack, it utilizes the inputs from the root `terragrunt.hcl` file to generate stacks for any specified folder paths in this repository.
 
 ![Trigger your stack](pics/10-trigger-your-stack.png)
+=======
+
+---
+
+## Step 6: Stack Configuration: Name Stack
+
+`IMPORTANT` You'll need to ensure you have the `terragrunt` label on your stack. This tells Spacelift to use terragrunt for all commands. In regards to naming your stack and other labels, you can do whatever you'd like!
+
+![Naming stack](pics/06-naming-stack.png)
+>>>>>>> 21d71abd7ef7b153e2b1bf313b15b16aa3060508
