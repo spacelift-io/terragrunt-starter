@@ -40,11 +40,6 @@ resource "aws_iam_role" "spacelift" {
   })
 }
 
-# testing something
-locals {
-  sharedSpaceliftContext = tostring(spacelift_context.shared.id)
-}
-
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift
@@ -71,7 +66,7 @@ module "stack" {
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift.arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = concat(
-      formatlist(tostring(local.sharedSpaceliftContext)),
+      formatlist(tostring(spacelift_context.shared.id)),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
   )
   labels = concat(
