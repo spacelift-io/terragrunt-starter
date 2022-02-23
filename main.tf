@@ -40,6 +40,11 @@ resource "aws_iam_role" "spacelift" {
   })
 }
 
+# testing something
+locals {
+  sharedSpaceliftContext = tostring(spacelift_context.shared.id)
+}
+
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift
@@ -67,7 +72,7 @@ module "stack" {
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = [
     concat(
-      formatlist(tostring(spacelift_context.shared.id)),
+      formatlist(local.sharedSpaceliftContext),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
     )
   ]
