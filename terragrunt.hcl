@@ -11,11 +11,11 @@ inputs = {
     "stacks/_spacelift/policies/trigger/new-stack-trigger" : {
       administrative       = true
       autodeploy           = false
-      enable_local_preview = false
+      enableLocalPreview   = false
       createOwnIamRole     = false
       setupAwsIntegration  = true
       description          = "Creates a Spacelift trigger policy that triggers new stacks upon creation."
-      additional_labels    = []
+      additionalLabels     = []
       attachmentPolicyIds  = []
       attachmentContextIds = []
       dependsOnStacks      = []
@@ -25,11 +25,11 @@ inputs = {
     "stacks/aws/example-account/us-east-1/s3/buckets/example-spacelift-bucket" : {
       administrative       = false
       autodeploy           = false
-      enable_local_preview = false
+      enableLocalPreview   = false
       createOwnIamRole     = false
       setupAwsIntegration  = true
       description          = "Creates an example Spacelift bucket."
-      additional_labels    = []
+      additionalLabels     = []
       attachmentPolicyIds  = []
       attachmentContextIds = []
       dependsOnStacks      = []

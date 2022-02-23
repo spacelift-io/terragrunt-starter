@@ -47,17 +47,18 @@ module "stack" {
   # Create a stack for each stack input
   for_each = var.stacks
   source   = "spacelift.dev/spacelift-io/stack/spacelift"
-  version  = "0.0.1"
+  version  = "0.1.2"
 
   # Inputs
   name                 = each.key
+  project_root         = each.key
   spaceliftAccountName = var.spaceliftAccountName
   repositoryName       = var.repositoryName
   repositoryBranch     = var.repositoryBranch
   description          = lookup(var.stacks[each.key], "description", "Terragrunt stack managed by Spacelift.")
-  terraform_version    = var.stacks[each.key].terraform_version == null ? "" : var.stacks[each.key].terraform_version
-  enable_local_preview = lookup(var.stacks[each.key], "enable_local_preview", false)
-  worker_pool_id       = var.stacks[each.key].worker_pool_id == null ? "" : var.stacks[each.key].worker_pool_id
+  terraformVersion     = var.stacks[each.key].terraformVersion == null ? "" : var.stacks[each.key].terraformVersion
+  enableLocalPreview   = lookup(var.stacks[each.key], "enableLocalPreview", false)
+  workerPoolId         = var.stacks[each.key].workerPoolId == null ? "" : var.stacks[each.key].workerPoolId
   administrative       = lookup(var.stacks[each.key], "administrative", false)
   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
   createIamRole        = var.stacks[each.key].createOwnIamRole == null ? false : var.stacks[each.key].createOwnIamRole
@@ -66,11 +67,10 @@ module "stack" {
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = [
     concat(
-      formatlist(spacelift_context.shared.id),
+      formatlist(tostring(spacelift_context.shared.id)),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
     )
   ]
-  project_root         = each.key
   labels = concat(
     ["managed", "terragrunt"],
     # Dynamically add dependencies if they are specified
@@ -79,7 +79,7 @@ module "stack" {
     # Dynamically generate Spacelift label folders to organize stacks based on their actual folder path
     # Note: This assumes your terragrunt structure begins one level deep as it does in this example under "stacks"
     [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
-    lookup(var.stacks[each.key], "additional_labels", [])
+    lookup(var.stacks[each.key], "additionalLabels", [])
   )
 }
 
