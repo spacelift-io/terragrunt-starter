@@ -1,9 +1,3 @@
-# Shared Context Used By All Stacks Deployed
-resource "spacelift_context" "shared" {
-  name        = "Shared"
-  description = "Shared context used by all stacks deployed by ${var.repositoryName}"
-}
-
 // IAM Role to allow stacks to deploy resources on AWS
 # This role is always created and used by all stacks by default,
 # but you can configure the module to create independent IAM roles per-stack
@@ -65,10 +59,7 @@ module "stack" {
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift.arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
-  attachmentContextIds = concat(
-      # formatlist(tostring(spacelift_context.shared.id)),
-      lookup(var.stacks[each.key], "attachmentContextIds", [])
-  )
+  attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
   labels = concat(
     ["managed", "terragrunt"],
     # Dynamically add dependencies if they are specified
