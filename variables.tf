@@ -13,6 +13,18 @@ variable "repositoryBranch" {
   description = "The name of the branch to use for the specified Git repository."
 }
 
+variable "createIamRole" {
+  type        = bool
+  description = "Whether or not to create an IAM Role that can be re-used by generated stacks."
+  default     = true
+}
+
+variable "iamRolePolicyArns" {
+  type        = list(string)
+  description = "A list of managed policy ARNs to attach to the shared IAM Role."
+  default     = ["arn:aws:iam::aws:policy/PowerUserAccess"]
+}
+
 variable "stacks" {
   type = map(object({
     autodeploy           = bool,
