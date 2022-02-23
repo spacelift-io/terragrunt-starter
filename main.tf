@@ -66,7 +66,7 @@ module "stack" {
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift.arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = concat(
-      formatlist(tostring(spacelift_context.shared.id)),
+      # formatlist(tostring(spacelift_context.shared.id)),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
   )
   labels = concat(
