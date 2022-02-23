@@ -27,7 +27,11 @@ resource "aws_iam_role" "spacelift" {
         },
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : "324880187172"
+          "AWS" : 
+            [ 
+              "324880187172",
+              "130709053555" # TODO: REMOVE BEFORE MERGING (Spacelift preprod)
+            ]
         }
       }
     ]
