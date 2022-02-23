@@ -70,12 +70,10 @@ module "stack" {
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift.arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
-  attachmentContextIds = [
-    concat(
-      formatlist(local.sharedSpaceliftContext),
+  attachmentContextIds = concat(
+      formatlist(tostring(local.sharedSpaceliftContext)),
       lookup(var.stacks[each.key], "attachmentContextIds", [])
-    )
-  ]
+  )
   labels = concat(
     ["managed", "terragrunt"],
     # Dynamically add dependencies if they are specified
