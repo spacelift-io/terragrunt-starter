@@ -11,11 +11,10 @@
 # createOwnIamRole: false
 # executionRoleArn: "ROLE_ARN_YOU_WANT_TO_USE_HERE"
 resource "aws_iam_role" "spacelift" {
-  name = "spacelift-${var.spaceliftAccountName}-terragrunt-role"
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/PowerUserAccess"
-  ]
-  assume_role_policy = jsonencode({
+  count               = var.createIamRole ? 1 : 0
+  name                = "spacelift-${var.spaceliftAccountName}-terragrunt-role"
+  managed_policy_arns = var.iamRolePolicyArns
+  assume_role_policy  = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {

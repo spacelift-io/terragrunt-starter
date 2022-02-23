@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Action": "sts:AssumeRole",
+        "Condition": {
+            "StringEquals": {
+            "sts:ExternalId": "spitzzz@terragrunt-starter"
+            }
+        },
+        "Effect": "Allow",
+        "Principal": {
+            "AWS": "324880187172"
+        }
+        }
+
+    ]
+}
