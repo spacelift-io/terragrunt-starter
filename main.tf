@@ -37,8 +37,8 @@ resource "aws_iam_role" "spacelift" {
 }
 
 module "policy-trigger-new-stacks" {
-  source   = "spacelift.dev/spacelift-io/stack/spacelift"
-  version  = "0.1.4"
+  source   = "spacelift.dev/spacelift-io/policy/spacelift"
+  version  = "0.0.1"
 
   # Inputs
   name = "(Terragrunt) Ignore changes outside the project root."
@@ -47,8 +47,8 @@ module "policy-trigger-new-stacks" {
 }
 
 module "policy-ignore-changes-outside-project-root" {
-  source   = "spacelift.dev/spacelift-io/stack/spacelift"
-  version  = "0.1.4"
+  source   = "spacelift.dev/spacelift-io/policy/spacelift"
+  version  = "0.0.1"
 
   # Inputs
   name = "(Terragrunt) Trigger newly created Spacelift stacks."
