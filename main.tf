@@ -43,7 +43,7 @@ module "policy-trigger-new-stacks" {
   # Inputs
   name = "(Terragrunt) Ignore changes outside the project root."
   body = file("_spacelift/policies/ignore-changes-outside-project-root.rego")
-  type = "PUSH"
+  type = "GIT_PUSH"
 }
 
 module "policy-ignore-changes-outside-project-root" {
