@@ -59,7 +59,7 @@ module "stack" {
   autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
   createIamRole        = var.stacks[each.key].createOwnIamRole == null ? false : var.stacks[each.key].createOwnIamRole
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
-  executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift.arn : var.stacks[each.key].executionRoleArn
+  executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
   labels = concat(
