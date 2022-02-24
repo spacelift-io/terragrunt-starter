@@ -56,11 +56,22 @@ module "policy-ignore-changes-outside-project-root" {
   type = "TRIGGER"
 }
 
+module "policy-trigger-dependencies" {
+  source   = "spacelift.dev/spacelift-io/policy/spacelift"
+  version  = "0.0.2"
+
+  # Inputs
+  name = "(Terragrunt) Trigger dependencies."
+  body = file("_spacelift/policies/trigger-dependencies.rego")
+  type = "TRIGGER"
+}
+
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift,
     module.policy-ignore-changes-outside-project-root,
-    module.policy-trigger-new-stacks
+    module.policy-trigger-new-stacks,
+    module.policy-trigger-dependencies
   ]
   # Create a stack for each stack input
   for_each = var.stacks
@@ -85,6 +96,7 @@ module "stack" {
   attachmentPolicyIds  = concat(
     [ 
       module.policy-trigger-new-stacks.id,
+      module.policy-trigger-dependencies.id,
       module.policy-ignore-changes-outside-project-root.id
     ],
     lookup(var.stacks[each.key], "attachmentPolicyIds", [])
