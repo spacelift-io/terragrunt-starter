@@ -43,8 +43,8 @@ module "policy-ignore-changes-outside-project-root" {
 
   # Inputs
   name = "(Terragrunt) Trigger newly created Spacelift stacks."
-  body = file("_spacelift/policies/trigger-new-stacks.rego")
-  type = "TRIGGER"
+  body = file("_spacelift/policies/ignore-changes-outside-project-root.rego")
+  type = "GIT_PUSH"
 }
 
 module "policy-trigger-dependencies" {
