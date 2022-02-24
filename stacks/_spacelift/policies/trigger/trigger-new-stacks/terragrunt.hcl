@@ -1,5 +1,5 @@
 terraform {
-  source = "tfr://spacelift.dev/spacelift-io/stack/spacelift?version=0.0.1"
+  source = "tfr://spacelift.dev/spacelift-io/policy/spacelift?version=0.0.1"
 }
 
 inputs = {
