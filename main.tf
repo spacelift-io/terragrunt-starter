@@ -36,9 +36,31 @@ resource "aws_iam_role" "spacelift" {
   })
 }
 
+module "policy-trigger-new-stacks" {
+  source   = "spacelift.dev/spacelift-io/stack/spacelift"
+  version  = "0.1.4"
+
+  # Inputs
+  name = "(Terragrunt) Ignore changes outside the project root."
+  body = file("_spacelift/policies/ignore-changes-outside-project-root.rego")
+  type = "PUSH"
+}
+
+module "policy-ignore-changes-outside-project-root" {
+  source   = "spacelift.dev/spacelift-io/stack/spacelift"
+  version  = "0.1.4"
+
+  # Inputs
+  name = "(Terragrunt) Trigger newly created Spacelift stacks."
+  body = file("_spacelift/policies/trigger-new-stacks.rego")
+  type = "TRIGGER"
+}
+
 module "stack" {
   depends_on = [
-    aws_iam_role.spacelift
+    aws_iam_role.spacelift,
+    module.ignore-changes-outside-project-root
+    module.policy-trigger-new-stacks
   ]
   # Create a stack for each stack input
   for_each = var.stacks
