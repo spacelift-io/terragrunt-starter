@@ -36,16 +36,7 @@ resource "aws_iam_role" "spacelift" {
   })
 }
 
-module "policy-trigger-new-stacks" {
-  source   = "spacelift.dev/spacelift-io/policy/spacelift"
-  version  = "0.0.2"
-
-  # Inputs
-  name = "(Terragrunt) Ignore changes outside the project root."
-  body = file("_spacelift/policies/ignore-changes-outside-project-root.rego")
-  type = "GIT_PUSH"
-}
-
+# Policies
 module "policy-ignore-changes-outside-project-root" {
   source   = "spacelift.dev/spacelift-io/policy/spacelift"
   version  = "0.0.2"
@@ -66,11 +57,17 @@ module "policy-trigger-dependencies" {
   type = "TRIGGER"
 }
 
+# Shared Context
+resource "spacelift_context" "shared" {
+  description = "A context meant to be shared with many stacks."
+  name        = "${var.spaceliftAccountName}-shared-context"
+}
+
+# Stack(s)
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift,
     module.policy-ignore-changes-outside-project-root,
-    module.policy-trigger-new-stacks,
     module.policy-trigger-dependencies
   ]
   # Create a stack for each stack input
@@ -95,13 +92,17 @@ module "stack" {
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].executionRoleArn
   attachmentPolicyIds  = concat(
     [ 
-      module.policy-trigger-new-stacks.id,
       module.policy-trigger-dependencies.id,
       module.policy-ignore-changes-outside-project-root.id
     ],
     lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   )
-  attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
+  attachmentContextIds = concat(
+    [
+      spacelift_context.shared.id
+    ],
+    lookup(var.stacks[each.key], "attachmentContextIds", [])
+  )
   labels = concat(
     ["managed", "terragrunt"],
     # Dynamically add dependencies if they are specified
