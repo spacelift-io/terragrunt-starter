@@ -4,6 +4,8 @@ The purpose of this repository is to help users get started with using Terragrun
 
 ## Pre-requisites:
 * Spacelift account already created.
+* AWS Account Access w/ permissions to create IAM Roles
+    * AWS CLI Installed/Configured Locally
 
 ## What does this repository create?
 * A dynamic number `n` of Spacelift Stacks: The number of stacks created depends upon the length of the `stacks` input variable in the `terragrunt.hcl` file in the root of this repository.

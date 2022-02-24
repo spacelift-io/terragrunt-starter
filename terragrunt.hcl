@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-  spaceliftAccountName = "spacelift-io"
+  spaceliftAccountName = "spacelift-io" # Change to your Spacelift account name
   repositoryName       = "terragrunt-starter"
   repositoryBranch     = "main"
   stacks               = {
