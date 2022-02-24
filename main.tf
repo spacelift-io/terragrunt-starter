@@ -42,7 +42,7 @@ module "policy-ignore-changes-outside-project-root" {
   version  = "0.0.2"
 
   # Inputs
-  name = "(Terragrunt) Trigger newly created Spacelift stacks."
+  name = "(Terragrunt) Ignore changes outside project root."
   body = file("_spacelift/policies/ignore-changes-outside-project-root.rego")
   type = "GIT_PUSH"
 }
