@@ -59,7 +59,7 @@ module "policy-ignore-changes-outside-project-root" {
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift,
-    module.ignore-changes-outside-project-root
+    module.ignore-changes-outside-project-root,
     module.policy-trigger-new-stacks
   ]
   # Create a stack for each stack input
