@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-    name = "(Example) DevOps are admins test"
+    name = "(Example) DevOps are admins"
     body = file("./policy.rego")
     type = "LOGIN"
 }

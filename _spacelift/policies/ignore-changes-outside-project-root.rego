@@ -27,7 +27,6 @@ affected {
     filepath := input.push.affected_files[_]
 
     startswith(filepath, input.stack.project_root)
-    not contains(filepath, "/")
     endswith(filepath, ".tf")
 }
 
@@ -40,7 +39,6 @@ affected {
     filepath := input.push.affected_files[_]
 
     startswith(filepath, input.stack.project_root)
-    not contains(filepath, "/")
     endswith(filepath, ".hcl")
 }
 
