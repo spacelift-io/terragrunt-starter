@@ -85,7 +85,7 @@ module "stack" {
   attachmentPolicyIds  = concat(
     [ 
       module.policy-trigger-new-stacks.id,
-      module.module.policy-ignore-changes-outside-project-root.id
+      module.policy-ignore-changes-outside-project-root.id
     ],
     lookup(var.stacks[each.key], "attachmentPolicyIds", [])
   )
