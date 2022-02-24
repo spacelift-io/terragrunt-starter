@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-    name = "Trigger newly created Spacelift stacks."
+    name = "DevOps are admins"
     body = file("./policy.rego")
-    type = "TRIGGER"
+    type = "LOGIN"
 }
