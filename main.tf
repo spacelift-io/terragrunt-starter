@@ -38,7 +38,7 @@ resource "aws_iam_role" "spacelift" {
 
 module "policy-trigger-new-stacks" {
   source   = "spacelift.dev/spacelift-io/policy/spacelift"
-  version  = "0.0.1"
+  version  = "0.0.2"
 
   # Inputs
   name = "(Terragrunt) Ignore changes outside the project root."
@@ -48,7 +48,7 @@ module "policy-trigger-new-stacks" {
 
 module "policy-ignore-changes-outside-project-root" {
   source   = "spacelift.dev/spacelift-io/policy/spacelift"
-  version  = "0.0.1"
+  version  = "0.0.2"
 
   # Inputs
   name = "(Terragrunt) Trigger newly created Spacelift stacks."
@@ -82,7 +82,13 @@ module "stack" {
   createIamRole        = var.stacks[each.key].createOwnIamRole == null ? false : var.stacks[each.key].createOwnIamRole
   setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
   executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].executionRoleArn
-  attachmentPolicyIds  = lookup(var.stacks[each.key], "attachmentPolicyIds", [])
+  attachmentPolicyIds  = concat(
+    [ 
+      module.policy-trigger-new-stacks.id,
+      module.module.policy-ignore-changes-outside-project-root.id
+    ],
+    lookup(var.stacks[each.key], "attachmentPolicyIds", [])
+  )
   attachmentContextIds = lookup(var.stacks[each.key], "attachmentContextIds", [])
   labels = concat(
     ["managed", "terragrunt"],
