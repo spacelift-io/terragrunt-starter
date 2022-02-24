@@ -3,7 +3,7 @@ terraform {
 }
 
 inputs = {
-    name = "All of Engineering gets read access"
+    name = "(Example) All of Engineering gets read access"
     body = file("./policy.rego")
     type = "ACCESS"
 }
