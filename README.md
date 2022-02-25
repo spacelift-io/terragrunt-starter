@@ -10,6 +10,11 @@ The purpose of this repository is to help users get started with using Terragrun
     * 1 Spacelift AWS Credentials attachment per stack
         * This attaches the AWS IAM role to the stack
     * 2 Spacelift Stack Policy attachments per stack
+* 4 Spacelift Policies
+    * (Terragrunt) Ignore Changes Outside Project Root
+    * (Terragrunt) Trigger Dependencies
+    * (Example) All of Engineering gets read access
+    * (Example) DevOps are admins
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
 
