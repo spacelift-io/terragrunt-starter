@@ -40,6 +40,8 @@ affected {
     endswith(filepath, ".hcl")
 }
 
+# OR
+
 # a) start with the Stack's project root, and;
 # b) end with ".rego", indicating that it's a rego policy file;
 affected {
