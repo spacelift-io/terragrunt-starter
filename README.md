@@ -123,3 +123,13 @@ Success should look like below:
 You're all setup! You can now trigger your stack for the first time! Keep in mind, when you trigger this stack, it utilizes the inputs from the root `terragrunt.hcl` file to generate stacks for any specified folder paths in this repository.
 
 ![Trigger your stack](pics/10-trigger-your-stack.png)
+
+## Step 9: Confirm Deployment
+
+Assuming everything went well, if you configured your stack for `autodeploy: false` you will be prompted to Confirm the deployment. Press the Confirm button to do so.
+
+![Confirm your stack deployment](pics/11-confirm-deployment.png)
+
+---
+
+## Step 10: 
