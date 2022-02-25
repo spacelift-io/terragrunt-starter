@@ -21,8 +21,7 @@ ignore  { input.push.tag != "" }
 # Here's a definition of an affected file - its path must:
 #
 # a) start with the Stack's project root, and;
-# b) does not contain a /
-# c) end with ".tf", indicating that it's a Terraform source file;
+# b) end with ".tf", indicating that it's a Terraform source file;
 affected {
     filepath := input.push.affected_files[_]
 
@@ -33,13 +32,21 @@ affected {
 # OR
 
 # a) start with the Stack's project root, and;
-# b) does not contain a /
-# c) end with ".hcl", indicating that it's a Terraform source file;
+# b) end with ".hcl", indicating that it's a Terraform source file;
 affected {
     filepath := input.push.affected_files[_]
 
     startswith(filepath, input.stack.project_root)
     endswith(filepath, ".hcl")
+}
+
+# a) start with the Stack's project root, and;
+# b) end with ".rego", indicating that it's a rego policy file;
+affected {
+    filepath := input.push.affected_files[_]
+
+    startswith(filepath, input.stack.project_root)
+    endswith(filepath, ".rego")
 }
 
 # Learn more about sampling policy evaluations here:
