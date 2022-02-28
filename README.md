@@ -18,7 +18,9 @@ The purpose of this repository is to help users get started with using Terragrun
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
 
-## Step 1: Create your repository
+## Deployment Steps
+
+### Step 1: Create your repository
 
 Create your own GitHub repository using this repository as a template. To do this, click the [Use this template](https://github.com/spacelift-io/terragrunt-starter/generate/) button on this repository. If you are using a different version control provider, you can also clone down this repository locally and initialize it into your own version control system as a new repository.
 
@@ -26,7 +28,7 @@ Create your own GitHub repository using this repository as a template. To do thi
 
 ---
 
-## Step 2: Create your Spacelift stack
+### Step 2: Create your Spacelift stack
 
 Login to your Spacelift account, and while on the **Stacks** tab, click the "Add Stack" button.
 
@@ -34,7 +36,7 @@ Login to your Spacelift account, and while on the **Stacks** tab, click the "Add
 
 ---
 
-## Step 3: Stack Configuration: Integrate VCS
+### Step 3: Stack Configuration: Integrate VCS
 
 Select your version control system (GitHub used in this example), then select the repository that you created with this codebase. For the branch selection, select the branch which you would like [tracked runs](https://docs.spacelift.io/concepts/run/tracked) to be triggered for by default. Tracks runs are runs which will deploy changes. Whether or not you will require approval for changes to be deployed comes in a future step.
 
@@ -44,7 +46,7 @@ NOTE: If the repository you created is not showing up, you may need to update Sp
 
 ---
 
-## Step 4: Stack Configuration: Configure Backend
+### Step 4: Stack Configuration: Configure Backend
 
 Ensure you select "Terraform" for the Backend, as the entire purpose of this is to use Terragrunt, a wrapper for Terraform. As far as the other configuration, that's up to you. We typically enjoy using the default settings here.
 
@@ -52,7 +54,7 @@ Ensure you select "Terraform" for the Backend, as the entire purpose of this is 
 
 ---
 
-## Step 5: Stack Configuration: Define Behavior
+### Step 5: Stack Configuration: Define Behavior
 
 `IMPORTANT` You'll need to make sure Administratrive is set to `true` on this step! It's also important that you do not change the project root. All other settings can be set as you desire. If you would like to require approval for tracked runs (runs to-be applied), ensure that autodeploy is disabled. You can customize your approval process later if needed by attaching [approval policies](https://docs.spacelift.io/concepts/policy/approval-policy) to this stack.
 
@@ -60,7 +62,7 @@ Ensure you select "Terraform" for the Backend, as the entire purpose of this is 
 
 ---
 
-## Step 6: Stack Configuration: Name Stack
+### Step 6: Stack Configuration: Name Stack
 
 `IMPORTANT` You'll need to ensure you have the `terragrunt` label on your stack. This tells Spacelift to use terragrunt for all commands. In regards to naming your stack and other labels, you can do whatever you'd like!
 
@@ -68,7 +70,7 @@ Ensure you select "Terraform" for the Backend, as the entire purpose of this is 
 
 ---
 
-## Step 7: Setup AWS Integration: Create an IAM Role to use
+### Step 7: Setup AWS Integration: Create an IAM Role to use
 
 With your stack created, we need to setup the AWS Integration to allow the stack to create resources on AWS. This is important because one of the powerful features of this example allows for the ability to re-use a single IAM Role across your generated Spacelift stacks. You won't be able to create this IAM Role unless you configure your primary stack to be able to create it. With that said, you'll need to go into your AWS account and create this role manually, or run the following script with valid AWS credentials to create the role.
 
@@ -118,13 +120,13 @@ Success should look like below:
 
 ---
 
-## Step 8: Triggering your stack
+### Step 8: Triggering your stack
 
 You're all setup! You can now trigger your stack for the first time! Keep in mind, when you trigger this stack, it utilizes the inputs from the root `terragrunt.hcl` file to generate stacks for any specified folder paths in this repository.
 
 ![Trigger your stack](pics/10-trigger-your-stack.png)
 
-## Step 9: Confirm Deployment
+### Step 9: Confirm Deployment
 
 Assuming everything went well, if you configured your stack for `autodeploy: false` you will be prompted to Confirm the deployment. Press the Confirm button to do so.
 
@@ -132,4 +134,32 @@ Assuming everything went well, if you configured your stack for `autodeploy: fal
 
 ---
 
-## Step 10: 
+## Customization
+
+To create Spacelift stacks dynamically, each stack will need to be defined in the root `terragrunt.hcl` file.
+
+```
+     "stacks/path/to/folder/you/want/to/be/a/spacelift/stack" : {
+       administrative       = false # https://docs.spacelift.io/concepts/stack/stack-settings#administrative
+       autodeploy           = false # https://docs.spacelift.io/concepts/stack/stack-settings#autodeploy
+       enableLocalPreview   = false # https://docs.spacelift.io/concepts/stack/stack-settings#enable-local-preview
+       createOwnIamRole     = false # Indicates whether or not you'd like an IAM role to be created separately for this stack, default behavior is to share a central IAM role for all stacks.
+       setupAwsIntegration  = true # Whether or not to configure an AWS IAM Role integration for the stack.
+       description          = "Example description of the stack."
+       additionalLabels     = [] # Any additional labels to apply to the stack, "Managed" and "Terragrunt" labels are applied automatically.
+       attachmentPolicyIds  = [] # Any additional Spacelift policy ids to apply to the stack. By default we create 2 policies: trigger dependencies & ignore files outside root and attach them. 
+       attachmentContextIds = [] # Any additional Spacelift context ids to apply to the stack.
+       dependsOnStacks      = [] # Any dependencies to apply to the stack. This will create a "depends-on:<stack>" label for each dependency.
+     }
+```
+
+### Noteworthy Features
+
+* **dependsOnStacks:** You can create dependencies between stacks by adding a list of dependant stack(s) in the `dependsOnStacks` property for a given stack. As the name implies, this allows you to enforce deployment dependencies between stack.
+* **Automatic Label Folder Creation:** Label folders will be setup automatically using your folder structure, allowing you to filter through your Spacelift stacks easier.
+* **Automatic setup of 2 Policies:** For all stacks created, a trigger dependencies policy & ignore files outside root policy will be automatically attached. These 2 policies are beneficial when working with this terragrunt monorepo on Spacelift.
+* **Account Shared Context:** For all stacks created, a shared context is automatically attached to every stack. You can use this context if there is any special information you need to share globally across all stacks. The name of this context is called `${var.spaceliftAccountName}-shared-context`
+
+## Limitations
+
+* Currently this example only supports AWS, but feel free to open a pull request to add new functionality. You should be able to follow the same approach for other cloud providers, and we plan to add more examples of this in the future.
