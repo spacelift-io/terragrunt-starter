@@ -23,9 +23,10 @@ The answer to the question is, **it depends**... That's because the purpose of t
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
 
-For example purposes demonstrating how stacks can be used, this stack also creates 2 additional Spacelift policies
-    * (Example) All of Engineering gets read access
-    * (Example) DevOps are admins
+For example purposes demonstrating how stacks can be used, this stack also creates 2 additional Spacelift policies:
+
+* (Example) All of Engineering gets read access
+* (Example) DevOps are admins
 
 ## Customization
 
