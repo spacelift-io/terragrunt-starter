@@ -4,11 +4,12 @@ The purpose of this repository is to help users get started with using Terragrun
 
 ## Pre-requisites:
 * Spacelift account already created.
+* AWS Account w/ credentials to create an IAM Role
 
 ## What does this repository create?
 * A dynamic number `n` of Spacelift Stacks: The number of stacks created depends upon the length of the `stacks` input variable in the `terragrunt.hcl` file in the root of this repository.
-    * 1 Spacelift AWS Credentials attachment per stack
-        * This attaches the AWS IAM role to the stack
+    * 1 Spacelift AWS Credentials attachment per stack (if `setupAwsIntegration` is true)
+        * This attaches an AWS IAM role to the stack
     * 2 Spacelift Stack Policy attachments per stack
 * 4 Spacelift Policies
     * (Terragrunt) Ignore Changes Outside Project Root
@@ -17,6 +18,38 @@ The purpose of this repository is to help users get started with using Terragrun
     * (Example) DevOps are admins
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
+
+## Customization
+
+To create Spacelift stacks dynamically, each stack will need to be defined in the root `terragrunt.hcl` file. Below is the example of the the attributes that are possible for a single stack within the `stacks` input.
+
+```
+{
+    "stacks/path/to/folder/you/want/to/be/a/spacelift/stack" : {
+        administrative       = bool # https://docs.spacelift.io/concepts/stack/stack-settings#administrative
+        autodeploy           = bool # https://docs.spacelift.io/concepts/stack/stack-settings#autodeploy
+        enableLocalPreview   = bool # https://docs.spacelift.io/concepts/stack/stack-settings#enable-local-preview
+        createOwnIamRole     = bool # Indicates whether or not you'd like an IAM role to be created separately for this stack, default behavior is to share a central IAM role for all stacks.
+        setupAwsIntegration  = bool # Whether or not to configure an AWS IAM Role integration for the stack.
+        executionRoleArn     = string # Optionally provide your own role ARN to use for the stack AWS Integration. When used, you should also set createOwnIamRole to false.
+        workerPoolId         = string # The id of the worker pool to use for the stack. If not specified, will use the public worker pool.
+        description          = "Example description of the stack."
+        terraformVersion     = string # The version of Terraform to use for the stack.
+        additionalLabels     = list(string) # Any additional labels to apply to the stack, "Managed" and "Terragrunt" labels are applied automatically.
+        attachmentPolicyIds  = list(string) # Any additional Spacelift policy ids to apply to the stack. By default we create 2 policies: trigger dependencies & ignore files outside root and attach them. 
+        attachmentContextIds = list(string) # Any additional Spacelift context ids to apply to the stack.
+        dependsOnStacks      = list(string) # Any dependencies to apply to the stack. This will create a "depends-on:<stack>" label for each dependency.
+    }
+}
+```
+
+### Noteworthy Features
+
+* **dependsOnStacks:** You can create dependencies between stacks by adding a list of dependant stack(s) in the `dependsOnStacks` property for a given stack. As the name implies, this allows you to enforce deployment dependencies between stack.
+* **Automatic Label Folder Creation:** Label folders will be setup automatically using your folder structure, allowing you to filter through your Spacelift stacks easier.
+* **Automatic setup of 2 Policies:** For all stacks created, a trigger dependencies policy & ignore files outside root policy will be automatically attached. These 2 policies are beneficial when working with this terragrunt monorepo on Spacelift.
+* **Account Shared Context:** For all stacks created, a shared context is automatically attached to every stack. You can use this context if there is any special information you need to share globally across all stacks. The name of this context is called `${var.spaceliftAccountName}-shared-context`
+* **Stack IAM Role Customization:** Don't want us to create a role for your Spacelift stack(s) to use? You can specify your own role for a given stack to use by setting `createOwnIamRole: false` `executionRoleArn: <roleArn>` for a given stack.
 
 ## Deployment Steps
 
@@ -133,32 +166,6 @@ Assuming everything went well, if you configured your stack for `autodeploy: fal
 ![Confirm your stack deployment](pics/11-confirm-deployment.png)
 
 ---
-
-## Customization
-
-To create Spacelift stacks dynamically, each stack will need to be defined in the root `terragrunt.hcl` file.
-
-```
-     "stacks/path/to/folder/you/want/to/be/a/spacelift/stack" : {
-       administrative       = false # https://docs.spacelift.io/concepts/stack/stack-settings#administrative
-       autodeploy           = false # https://docs.spacelift.io/concepts/stack/stack-settings#autodeploy
-       enableLocalPreview   = false # https://docs.spacelift.io/concepts/stack/stack-settings#enable-local-preview
-       createOwnIamRole     = false # Indicates whether or not you'd like an IAM role to be created separately for this stack, default behavior is to share a central IAM role for all stacks.
-       setupAwsIntegration  = true # Whether or not to configure an AWS IAM Role integration for the stack.
-       description          = "Example description of the stack."
-       additionalLabels     = [] # Any additional labels to apply to the stack, "Managed" and "Terragrunt" labels are applied automatically.
-       attachmentPolicyIds  = [] # Any additional Spacelift policy ids to apply to the stack. By default we create 2 policies: trigger dependencies & ignore files outside root and attach them. 
-       attachmentContextIds = [] # Any additional Spacelift context ids to apply to the stack.
-       dependsOnStacks      = [] # Any dependencies to apply to the stack. This will create a "depends-on:<stack>" label for each dependency.
-     }
-```
-
-### Noteworthy Features
-
-* **dependsOnStacks:** You can create dependencies between stacks by adding a list of dependant stack(s) in the `dependsOnStacks` property for a given stack. As the name implies, this allows you to enforce deployment dependencies between stack.
-* **Automatic Label Folder Creation:** Label folders will be setup automatically using your folder structure, allowing you to filter through your Spacelift stacks easier.
-* **Automatic setup of 2 Policies:** For all stacks created, a trigger dependencies policy & ignore files outside root policy will be automatically attached. These 2 policies are beneficial when working with this terragrunt monorepo on Spacelift.
-* **Account Shared Context:** For all stacks created, a shared context is automatically attached to every stack. You can use this context if there is any special information you need to share globally across all stacks. The name of this context is called `${var.spaceliftAccountName}-shared-context`
 
 ## Limitations
 

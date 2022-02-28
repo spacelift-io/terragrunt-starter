@@ -37,6 +37,7 @@ resource "aws_iam_role" "spacelift" {
 }
 
 # Policies
+# Ignore changes outside root policy
 module "policy-ignore-changes-outside-project-root" {
   source   = "spacelift.dev/spacelift-io/policy/spacelift"
   version  = "0.0.2"
@@ -47,6 +48,7 @@ module "policy-ignore-changes-outside-project-root" {
   type = "GIT_PUSH"
 }
 
+# Trigger dependencies policy
 module "policy-trigger-dependencies" {
   source   = "spacelift.dev/spacelift-io/policy/spacelift"
   version  = "0.0.2"
@@ -64,6 +66,7 @@ resource "spacelift_context" "shared" {
 }
 
 # Stack(s)
+# Define the stacks you want to create in the root `terragrunt.hcl` file
 module "stack" {
   depends_on = [
     aws_iam_role.spacelift,
