@@ -5,19 +5,27 @@ The purpose of this repository is to help users get started with using Terragrun
 ## Pre-requisites:
 * Spacelift account already created.
 * AWS Account w/ credentials to create an IAM Role
+* Basic familiarity with Terraform/Terragrunt
 
 ## What does this repository create?
-* A dynamic number `n` of Spacelift Stacks: The number of stacks created depends upon the length of the `stacks` input variable in the `terragrunt.hcl` file in the root of this repository.
+
+The answer to the question is, **it depends**... That's because the purpose of this repository is to dynamically generate stacks based on folder paths. Therefore, we need to tell Spacelift what stacks to create. In this example, we are doing that from our root `terragrunt.hcl` file using the `stacks` input variable.
+
+* A dynamic number `n` of Spacelift Stacks: The number of stacks created depends upon the number of the unique `stacks` in the [terragrunt.hcl](./terragrunt.hcl) file in the root of this repository.
     * 1 Spacelift AWS Credentials attachment per stack (if `setupAwsIntegration` is true)
         * This attaches an AWS IAM role to the stack
-    * 2 Spacelift Stack Policy attachments per stack
-* 4 Spacelift Policies
-    * (Terragrunt) Ignore Changes Outside Project Root
-    * (Terragrunt) Trigger Dependencies
-    * (Example) All of Engineering gets read access
-    * (Example) DevOps are admins
+    * Optionally create 1 IAM Role per stack if `createOwnIamRole` is true
+    * Alyways attaches 2 Spacelift Stack Policy attachments per stack, the 2 attached are described below.
+* 2 Spacelift Policies
+    * (Terragrunt) Ignore Changes Outside Project Root (attached to all stacks created)
+    * (Terragrunt) Trigger Dependencies (attached to all stacks created)
+* 1 Spacelift Context (attached to all stacks created)
 * 1 AWS IAM Role with `PowerUserAccess`
     * This is the role that will be assumed during `terragrunt` commands
+
+For example purposes demonstrating how stacks can be used, this stack also creates 2 additional Spacelift policies
+    * (Example) All of Engineering gets read access
+    * (Example) DevOps are admins
 
 ## Customization
 
