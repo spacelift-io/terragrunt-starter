@@ -33,7 +33,7 @@ To create Spacelift stacks dynamically, each stack will need to be defined in th
         setupAwsIntegration  = bool # Whether or not to configure an AWS IAM Role integration for the stack.
         executionRoleArn     = string # Optionally provide your own role ARN to use for the stack AWS Integration. When used, you should also set createOwnIamRole to false.
         workerPoolId         = string # The id of the worker pool to use for the stack. If not specified, will use the public worker pool.
-        description          = "Example description of the stack."
+        description          = string # A description to apply to the stack created.
         terraformVersion     = string # The version of Terraform to use for the stack.
         additionalLabels     = list(string) # Any additional labels to apply to the stack, "Managed" and "Terragrunt" labels are applied automatically.
         attachmentPolicyIds  = list(string) # Any additional Spacelift policy ids to apply to the stack. By default we create 2 policies: trigger dependencies & ignore files outside root and attach them. 
