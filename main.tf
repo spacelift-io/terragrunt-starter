@@ -93,7 +93,7 @@ module "stack" {
   create_iam_role        = var.stacks[each.key].create_own_iam_role == null ? false : var.stacks[each.key].create_own_iam_role
   setup_aws_integration  = lookup(var.stacks[each.key], "setup_aws_integration", true)
   execution_role_arn     = var.stacks[each.key].execution_role_arn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].execution_role_arn
-  attachment_policy_ids = concat(
+  attachment_policy_ids  = concat(
     [
       module.policy-trigger-dependencies.id,
       module.policy-ignore-changes-outside-project-root.id
