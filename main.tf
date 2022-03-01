@@ -80,7 +80,7 @@ module "stack" {
 
   # Inputs
   name                   = each.key
-  projectRoot            = each.key
+  project_root           = each.key
   spacelift_account_name = var.spacelift_account_name
   repository_name        = var.repository_name
   repository_branch      = var.repository_branch
