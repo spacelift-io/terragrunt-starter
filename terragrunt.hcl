@@ -15,10 +15,14 @@ inputs = {
       createOwnIamRole     = false
       setupAwsIntegration  = true
       description          = "Creates a Spacelift Access Policy that gives the engineering team read access to stacks."
-      additionalLabels     = []
+      additionalLabels     = [
+        "turtle"
+      ]
       attachmentPolicyIds  = []
       attachmentContextIds = []
-      dependsOnStacks      = []
+      dependsOnStacks      = [
+        "stacks/_spacelift/policies/login/devops-are-admins"
+      ]
     },
     "stacks/_spacelift/policies/login/devops-are-admins" : {
       administrative       = true
