@@ -2,33 +2,33 @@
 # This role is always created and used by all stacks by default,
 # but you can configure the module to create independent IAM roles per-stack
 # by using the following for a given stack's map configuration:
-# setupAwsIntegration: true
-# createOwnIamRole: true
+# setup_aws_integration: true
+# create_own_iam_role: true
 # ------
 # OR you can optionally specify your own role to use for a given stack
 # by using the following for a given stack's map configuration:
-# setupAwsIntegration: true
-# createOwnIamRole: false
-# executionRoleArn: "ROLE_ARN_YOU_WANT_TO_USE_HERE"
+# setup_aws_integration: true
+# create_own_iam_role: false
+# execution_role_arn: "ROLE_ARN_YOU_WANT_TO_USE_HERE"
 resource "aws_iam_role" "spacelift" {
-  count               = var.createIamRole ? 1 : 0
-  name                = "spacelift-${var.spaceliftAccountName}-terragrunt-role"
-  managed_policy_arns = var.iamRolePolicyArns
-  assume_role_policy  = jsonencode({
+  count               = var.create_iam_role ? 1 : 0
+  name                = "spacelift-${var.spacelift_account_name}-terragrunt-role"
+  managed_policy_arns = var.iam_role_policy_arns
+  assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
         "Action" : "sts:AssumeRole",
         "Condition" : {
           "StringLike" : {
-            "sts:ExternalId" : "${var.spaceliftAccountName}@*"
+            "sts:ExternalId" : "${var.spacelift_account_name}@*"
           }
         },
         "Effect" : "Allow",
         "Principal" : {
-          "AWS" : [ 
-              "arn:aws:iam::324880187172:root",
-              "arn:aws:iam::130709053555:root" # TODO: REMOVE BEFORE MERGING (Spacelift preprod)
+          "AWS" : [
+            "arn:aws:iam::324880187172:root",
+            "arn:aws:iam::130709053555:root" # TODO: REMOVE BEFORE MERGING (Spacelift preprod)
           ]
         }
       }
@@ -39,8 +39,8 @@ resource "aws_iam_role" "spacelift" {
 # Policies
 # Ignore changes outside root policy
 module "policy-ignore-changes-outside-project-root" {
-  source   = "spacelift.dev/spacelift-io/policy/spacelift"
-  version  = "0.0.2"
+  source  = "spacelift.dev/spacelift-io/policy/spacelift"
+  version = "0.0.2"
 
   # Inputs
   name = "(Terragrunt) Ignore changes outside project root."
@@ -50,8 +50,8 @@ module "policy-ignore-changes-outside-project-root" {
 
 # Trigger dependencies policy
 module "policy-trigger-dependencies" {
-  source   = "spacelift.dev/spacelift-io/policy/spacelift"
-  version  = "0.0.2"
+  source  = "spacelift.dev/spacelift-io/policy/spacelift"
+  version = "0.0.2"
 
   # Inputs
   name = "(Terragrunt) Trigger dependencies."
@@ -62,7 +62,7 @@ module "policy-trigger-dependencies" {
 # Shared Context
 resource "spacelift_context" "shared" {
   description = "A context meant to be shared with many stacks."
-  name        = "${var.spaceliftAccountName}-shared-context"
+  name        = "${var.spacelift_account_name}-shared-context"
 }
 
 # Stack(s)
@@ -76,44 +76,44 @@ module "stack" {
   # Create a stack for each stack input
   for_each = var.stacks
   source   = "spacelift.dev/spacelift-io/stack/spacelift"
-  version  = "0.2.3"
+  version  = "1.0.0"
 
   # Inputs
-  name                 = each.key
-  projectRoot          = each.key
-  spaceliftAccountName = var.spaceliftAccountName
-  repositoryName       = var.repositoryName
-  repositoryBranch     = var.repositoryBranch
-  description          = lookup(var.stacks[each.key], "description", "Terragrunt stack managed by Spacelift.")
-  terraformVersion     = var.stacks[each.key].terraformVersion == null ? "" : var.stacks[each.key].terraformVersion
-  enableLocalPreview   = lookup(var.stacks[each.key], "enableLocalPreview", false)
-  workerPoolId         = var.stacks[each.key].workerPoolId == null ? "" : var.stacks[each.key].workerPoolId
-  administrative       = lookup(var.stacks[each.key], "administrative", false)
-  autodeploy           = lookup(var.stacks[each.key], "autodeploy", false)
-  createIamRole        = var.stacks[each.key].createOwnIamRole == null ? false : var.stacks[each.key].createOwnIamRole
-  setupAwsIntegration  = lookup(var.stacks[each.key], "setupAwsIntegration", true)
-  executionRoleArn     = var.stacks[each.key].executionRoleArn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].executionRoleArn
-  attachmentPolicyIds  = concat(
-    [ 
+  name                   = each.key
+  projectRoot            = each.key
+  spacelift_account_name = var.spacelift_account_name
+  repository_name        = var.repository_name
+  repository_branch      = var.repository_branch
+  description            = lookup(var.stacks[each.key], "description", "Terragrunt stack managed by Spacelift.")
+  terraform_version      = var.stacks[each.key].terraform_version == null ? "" : var.stacks[each.key].terraform_version
+  enable_local_preview   = lookup(var.stacks[each.key], "enable_local_preview", false)
+  worker_pool_id         = var.stacks[each.key].worker_pool_id == null ? "" : var.stacks[each.key].worker_pool_id
+  administrative         = lookup(var.stacks[each.key], "administrative", false)
+  autodeploy             = lookup(var.stacks[each.key], "autodeploy", false)
+  create_iam_role        = var.stacks[each.key].create_own_iam_role == null ? false : var.stacks[each.key].create_own_iam_role
+  setup_aws_integration  = lookup(var.stacks[each.key], "setup_aws_integration", true)
+  execution_role_arn     = var.stacks[each.key].execution_role_arn == null ? aws_iam_role.spacelift[0].arn : var.stacks[each.key].execution_role_arn
+  attachment_policy_ids = concat(
+    [
       module.policy-trigger-dependencies.id,
       module.policy-ignore-changes-outside-project-root.id
     ],
-    lookup(var.stacks[each.key], "attachmentPolicyIds", [])
+    lookup(var.stacks[each.key], "attachment_policy_ids", [])
   )
-  attachmentContextIds = concat(
+  attachment_context_ids = concat(
     [
       spacelift_context.shared.id
     ],
-    lookup(var.stacks[each.key], "attachmentContextIds", [])
+    lookup(var.stacks[each.key], "attachment_context_ids", [])
   )
   labels = concat(
     ["managed", "terragrunt"],
     # Dynamically add dependencies if they are specified
     # Note: Requires trigger dependencies policies for labels to trigger dependencies
-    formatlist("depends-on:%s", lookup(var.stacks[each.key], "dependsOnStacks")),
+    formatlist("depends-on:%s", lookup(var.stacks[each.key], "depends_on_stacks")),
     # Dynamically generate Spacelift label folders to organize stacks based on their actual folder path
     # Note: This assumes your terragrunt structure begins one level deep as it does in this example under "stacks"
     [join("", ["folder:", join("/", slice(split("/", each.key), 1, length(split("/", each.key))))])],
-    lookup(var.stacks[each.key], "additionalLabels", [])
+    lookup(var.stacks[each.key], "additional_labels", [])
   )
 }
